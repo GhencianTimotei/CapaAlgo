@@ -1,0 +1,46 @@
+/*------------------------------------------------------------------------------------------------+
+| File: inductive_sensor_algo.hm                                                                  |
++-------------------------------------------------------------------------------------------------+
+| Project: Audi eTab                                                                              |
++-------------------------------------------------------------------------------------------------+
+| Short description: In this file are included all the headers                                    |
+|                                                                                                 |
+|                                                                                                 |
+|                                                                                                 |
+|                                                                                                 |
++------------------------------------------------------------------------------------------------*/
+
+#ifndef INDUCTIVE_SENSOR_ALGO_HM_
+#define INDUCTIVE_SENSOR_ALGO_HM_
+/* polyspace+2 MISRA-C3:2.5 [Justified:Low] "Macro should be kept for future usage" */
+#define U32_MAX                            (U32)0xFFFFFFFFu
+#define U24_MAX                            (U32)0xFFFFFFu
+
+#define U16_INDUCTIVE_THRESHOLD_NVM_DEF    (U16)60000u
+#define U16_LDC_REF_DEBOUNCE_NVM_DEF       (U16)52u
+#define U16_LDC_DEBOUNCE_NVM_DEF           (U16)2u
+#define U16_LDC_DEBOUNCE_ACTIVE_NVM_DEF    (U16)3u
+#define U16_LDC_OPEN_TIMEOUT_NVM_DEF       (U16)320u
+#define U16_MODE_OF_ACTIVATION_NVM_DEF     (U16)0u
+#define U16_INDUCTIVE_NO_OF_INITS          (U8)5u
+#define U16_LDC_FREEZE_THRESHOLD_NVM_DEF   (U16)5760u                               /* Freeze threshold calculation base                 */
+#define U16_LDC_FREEZE_CANCEL_NVM_DEF      (U16)320u                                /* Debounce time for freeze (in samples)             */
+#define U16_INDUCTIVE_OFFDELAY             (U8)40u
+#define U8_LDC_NOISE_DEBOUNCE              (U8)8u
+#define U8_LDC_NOISE_ACTIVE                (U8)192u
+#define U16_LDC_NOISE_OFFSET               (U16)4800u
+
+/* Will be included in NVM instead of U16_LDC_INT_TIMEOUT_NORMAL_NVM_DEF and U16_LDC_INT_TIMEOUT_ACTIVE_NVM_DEF, but for the moment them are not covered by SSA and SWR. */
+#define U16_LDC_INT_LOW_TICKS_NVM_DEF      (U16)19
+#define U16_LDC_INT_HIGH_TICKS_NVM_DEF     (U16)25
+#define U32_DEFAULT_THRESHOLD_REFERENCE    (U32)0u                            /* Initial THRESHOLD_REFERENCE                       */
+#define U32_DEFAULT_THRESHOLD_VALUE        (U32)0u                            /* Initial THRESHOLD_VALUE                           */
+#define U16_INDUCTIVE_CH0_THRESHOLD        (U16)0u                            /* Initial INDUCTIVE_CH0_THRESHOLD                   */
+#define U16_INDUCTIVE_CH1_THRESHOLD        (U16)0u                            /* Initial INDUCTIVE_CH1_THRESHOLD                   */
+#define U8_LDC_REF_DEBOUNCE                (U8)U16_LDC_REF_DEBOUNCE_NVM_DEF        /* Debounce time for threshold reference calculation */
+/* polyspace+1 MISRA-C3:2.5 [Justified:Low] "Macro should be kept for future usage" */
+#define U8_LDC_DEBOUNCE                    (U8)U16_LDC_DEBOUNCE_NVM_DEF            /* Debounce time for touch validation in normal mode */
+#define U8_LDC_DEBOUNCE_ACTIVE             (U8)U16_LDC_DEBOUNCE_ACTIVE_NVM_DEF     /* Debounce time for touch validation in active mode */
+#define U16_LDC_OPEN_TIMEOUT               (U16)U16_LDC_OPEN_TIMEOUT_NVM_DEF       /* Debounce time for maximum touch period            */
+
+#endif /* INDUCTIVE_SENSOR_ALGO_HM_ */

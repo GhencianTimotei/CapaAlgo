@@ -1,0 +1,249 @@
+/*==================================================================================================
+
+   @file        autosar_flash_144.icf
+   @version     1.0.1
+
+   @brief       GHS Linker Command File
+   @details     GHS Linker Command File
+                This file contains sample code only. It is not part of the production code deliverables
+====================================================================================================    
+   Project      : AUTOSAR 4.3 MCAL
+   Platform     : ARM
+   Peripheral   : 
+   Dependencies : none
+   
+   Autosar Version       : 4.3.1
+   Autosar Revision      : ASR_REL_4_3_REV_0001
+   Autosar Conf. Variant : 
+   Software Version      : 1.0.1
+   Build Version         : S32K14x_MCAL_1_0_1_RTM_ASR_REL_4_3_REV_0001_20190620
+
+   (c) Copyright 2006-2016 Freescale Semiconductor, Inc. 
+*       Copyright 2017-2018 NXP
+   All Rights Reserved.
+
+
+====================================================================================================
+
+Note: This linker command file to be used with S32K144 device only.
+==================================================================================================*/
+
+define memory Mem with size = 4G;
+
+/* S32K144 - 512 KB Flash in range 0x00000000:0x0007FFFF */
+define region flash_rsvd1_region      = Mem:[from 0x0 to 0x07];       /* rcw word */
+define region RegionBlock_ApplVect    = Mem:[from 0x30000 to 0x3000F]; /* 16 Byte */
+define region FblBmHdrHeader          = Mem:[from 0x30010 to 0x3002F]; /* 32 Byte */
+define region AswHeader               = Mem:[from 0x30030 to 0x3004F]; /* 32 Byte */
+define region flash_vector_table_region = Mem:[from 0x30200 to 0x303FF];      /* flash vector table */
+define region flash_rsvd2_region      = Mem:[from 0x30430 to 0x3043F];    /* flash configuration area */ /* already defined in the bootloader, must be removed */
+define region flash_rsvd_fls_region   = Mem:[from 0x30440 to 0x3049F];    /* a reserved section for FLASH-RAM functions */
+define region flash_rsvd_eep_region   = Mem:[from 0x304A0 to 0x3052F];    /* a reserved section for EEP-RAM functions */
+define region flash_memory_region     = Mem:[from 0x30530 to 0x7EFFF];    /* P-FLASH to be used by APP */
+define region pdl_memory_region       = Mem:[from 0x7F000 to 0x7FFFF];    /* P-FLASH to be used by PDL module to store permanent logistics data */
+
+/* S32K144- 60 KB RAM in range 0x1FFF8000:0x20006FFF */
+define region iram_intvec_region         = Mem:[from 0x1FFF8000 to 0x1FFF8388]; 
+define region iram_main_region           = Mem:[from 0x1FFF8390 to 0x20006900]; 
+define region iram_stack_main_region     = Mem:[from 0x20006900 to 0x20006A00]; /* a reserved 0x100 bytes ram section needed by main stack */
+define region iram_stack_process_region  = Mem:[from 0x20006A00 to 0x20006E0F]; /* a reserved 0x300 bytes ram section needed by process stack */
+//define region iram_rsvd_fls_region       = Mem:[from 0x20006E10 to 0x20006E6F]; /* a reserved 0x60  bytes ram section needed by FLS driver */
+//define region iram_rsvd_eep_region       = Mem:[from 0x20006E70 to 0x20006EFF]; /* a reserved 0x90  bytes ram section needed by EEP driver */
+//define region iram_results_region        = Mem:[from 0x20006F00 to 0x20006FF8]; /* a reserved 0x100 bytes ram section needed for test results */
+define region EepDummy_region            = Mem:[from 0x20006EC0 to 0x20006FF7]; /* a reserved 0x100 bytes ram section needed for test results */
+define region magicflag_region           = Mem:[from 0x20006FF8 to 0x20006FFF]; /* a reserved section needed for Magic Flag shared with BM/BL */
+
+define exported symbol __STACK_MAIN_SIZE   = (1*256);
+define exported symbol __STACK_PROCESS_SIZE   = (1*1024);
+
+initialize manually { section .intc_vector             };
+initialize manually { section .data                    };
+initialize manually { section .mcal_data };
+initialize manually { section .mcal_data_no_cacheable  };
+initialize manually { section .ramcode                 };
+
+do not initialize { section .bss,
+                    section .mcal_bss,
+                    section .mcal_bss_no_cacheable,
+                    section .stack_main, 
+                    section .stack_process,
+                    section .flash_config,
+                    section .applVal,
+                    section .EEPDATA,
+                    section .MagicFlagSection};
+
+define block AppIntVec                          { section .intc_vector };
+define block AppIntVec_Init                     { section .intc_vector_init };
+define block AppStartup with fixed order        { section .startup, section .systeminit} ;
+define block AppCode with fixed order           { section .text, section .mcal_text};
+define block AppRAMCode with fixed order        { section .ramcode};
+define block AppRAMCode_Init with fixed order   { section .ramcode_init};
+
+define block AppACFLSCode with fixed order      { section .acfls_code_rom};
+define block AppACEEPCode with fixed order      { section .aceep_code_rom};
+define block PDLBlock                           { section .PDLData};
+
+define block AppROData with fixed order         { section .rodata,  section .mcal_const_cfg, section .mcal_const};
+define block AppData with fixed order           {section .data, section .mcal_data};
+define block AppData_Init with fixed order      {section .data_init, section .mcal_data_init};
+define block AppBSS with fixed order            { section .noinit, section .bss, section .mcal_bss};
+define block AppBSS_NO_CACHE with fixed order   { section .mcal_bss_no_cacheable};
+define block AppData_NO_CACHE with fixed order  { section .mcal_data_no_cacheable};
+define block AppData_NO_CACHE_Init with fixed order  { section .mcal_data_no_cacheable_init};
+define block AppEndAddress with fixed order     { section .app_end_address};
+define block AppMainSTACK with alignment = 16, size = __STACK_MAIN_SIZE  { section .stack_main};
+define block AppProcessSTACK with alignment = 16, size = __STACK_PROCESS_SIZE  { section .stack_process};
+define block AppRCW                             { section .rcw};
+define block AppVectorTable                     { section .flash_vector_table};
+define block AppFlashConfig                     { section .flash_config};
+define block EepDummy                           { section .EEPDATA};
+define block MagicFlagBlock                     { section .MagicFlagSection};
+
+define root section ApplVectSectionGroup_START_SEC
+{
+  public _ApplVectSectionGroup_START:
+  public _ApplVectGroup_ALL_START:
+};
+define root section ApplVectSectionGroup_LIMIT_SEC
+{
+  public _ApplVectSectionGroup_LIMIT:
+  public _ApplVectGroup_ALL_LIMIT:
+};
+define block ApplVectSectionGroup with fixed order
+{
+  section ApplVectSectionGroup_START_SEC,
+  block ApplVectSection_BLOCK { section .ApplVectSection },
+  section ApplVectSectionGroup_LIMIT_SEC
+};
+"RegionBlock_ApplVect__ApplVectSectionGroup": place in RegionBlock_ApplVect
+{
+  block ApplVectSectionGroup
+};
+keep
+{
+  section .ApplVectSection
+};
+
+define root section FblBmHdrHeaderGroup_START_SEC
+{
+  public _FblBmHdrHeaderGroup_START:
+  public _BmHdrHeaderGroup_ALL_START:
+};
+define root section FblBmHdrHeaderGroup_LIMIT_SEC
+{
+  public _FblBmHdrHeaderGroup_LIMIT:
+  public _BmHdrHeaderGroup_ALL_LIMIT:
+};
+define block FblBmHdrHeaderGroup with fixed order
+{
+  section FblBmHdrHeaderGroup_START_SEC,
+  block BmHdrHeaderSection_BLOCK { section .BmHdrHeaderSection },
+  section FblBmHdrHeaderGroup_LIMIT_SEC
+};
+"FblBmHdrHeader__FblBmHdrHeaderGroup": place in FblBmHdrHeader
+{
+  block FblBmHdrHeaderGroup
+};
+keep
+{
+  section .BmHdrHeaderSection
+};
+
+define root section AswHeaderGroup_START_SEC
+{
+  public _AswHeaderGroup_START:
+  public _AswHeaderGroup_ALL_START:
+};
+define root section AswHeaderGroup_LIMIT_SEC
+{
+  public _AswHeaderGroup_LIMIT:
+  public _AswHeaderGroup_ALL_LIMIT:
+};
+define block AswHeaderGroup with fixed order
+{
+  section AswHeaderGroup_START_SEC,
+  block AswHeaderSection_BLOCK { section .AswHeaderSection },
+  section AswHeaderGroup_LIMIT_SEC
+};
+"AswHeader__AswHeaderGroup": place in AswHeader
+{
+  block AswHeaderGroup
+};
+keep
+{
+  section .AswHeaderSection
+};
+
+place in flash_rsvd1_region { block AppRCW};
+place in flash_vector_table_region { block AppVectorTable};
+place in flash_rsvd2_region 	{ block AppFlashConfig };
+place in flash_rsvd_fls_region  { block AppACFLSCode };
+place in flash_rsvd_eep_region  { block AppACEEPCode };
+place in EepDummy_region  { block EepDummy };
+place in magicflag_region  { block MagicFlagBlock };
+
+place in flash_memory_region { block AppIntVec_Init,
+                               block AppStartup,
+                               block AppCode,
+                               block AppRAMCode_Init,
+                               block AppROData,
+                               block AppData_Init,
+                               block AppData_NO_CACHE_Init,
+                               block AppEndAddress } ;
+
+place in iram_intvec_region {  block AppIntVec };
+place in iram_main_region   {  block AppRAMCode,
+                               block AppBSS,
+                               block AppData,
+                               block AppBSS_NO_CACHE,
+                               block AppData_NO_CACHE };
+
+place in pdl_memory_region           { block PDLBlock       };
+
+place in iram_stack_main_region      { block AppMainSTACK   };
+place in iram_stack_process_region   { block AppProcessSTACK};
+           
+/* define external symbols */
+           
+define exported symbol _Stack_main_end    = start(iram_stack_main_region);
+define exported symbol _Stack_main_start  = start(iram_stack_main_region) + size(iram_stack_main_region); 
+
+define exported symbol _Stack_process_end    = start(iram_stack_process_region);
+define exported symbol _Stack_process_start  = start(iram_stack_process_region) + size(iram_stack_process_region); 
+
+define exported symbol INT_SRAM_START  = start(iram_main_region);
+define exported symbol INT_SRAM_SIZE   = (size(iram_main_region) + size(iram_stack_main_region) + size(iram_stack_process_region)  + 3) / 4;
+define exported symbol INT_SRAM_END    = start(iram_main_region) + size(iram_main_region) + size(iram_stack_main_region) + size(iram_stack_process_region);
+
+/* Fls module access code support */    
+define exported symbol Fls_ACEraseRomStart  = start(flash_rsvd_fls_region);
+define exported symbol Fls_ACEraseRomEnd    = start(flash_rsvd_fls_region) + size(flash_rsvd_fls_region) ;
+define exported symbol Fls_ACEraseSize      = (size(flash_rsvd_fls_region) + 3) / 4; /* Copy 4 bytes at a time*/ 
+
+define exported symbol Fls_ACWriteRomStart  = start(flash_rsvd_fls_region);
+define exported symbol Fls_ACWriteRomEnd    = start(flash_rsvd_fls_region) + size(flash_rsvd_fls_region) ;
+define exported symbol Fls_ACWriteSize      = (size(flash_rsvd_fls_region) + 3) / 4; /* Copy 4 bytes at a time*/ 
+
+/* Eep module access code support */    
+define exported symbol Eep_ACWriteRomStart      = start(flash_rsvd_eep_region);
+define exported symbol Eep_ACWriteRomEnd        = start(flash_rsvd_eep_region) + size(flash_rsvd_eep_region) ;
+define exported symbol Eep_ACWriteSize          = (size(flash_rsvd_eep_region) + 3) / 4; /* Copy 4 bytes at a time*/ 
+
+//define exported symbol _WRITE_FUNC_ADDRESS_EEP_ = start(iram_rsvd_eep_region);
+
+
+keep {  block AppACFLSCode,
+        block AppACEEPCode,
+        block AppRAMCode,
+        block AppBSS,
+        block AppData,
+        block AppBSS_NO_CACHE,
+        block AppData_NO_CACHE,
+        section .mcal_bss_no_cacheable,
+        section .mcal_data_no_cacheable,
+        section .mcal_data,
+        section .mcal_bss,
+        section .ramcode, 
+        section .acfls_code_rom,
+        section .aceep_code_rom
+    };

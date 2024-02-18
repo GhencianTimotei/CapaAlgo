@@ -1,0 +1,229 @@
+Import('env_application')
+
+objects = []
+
+#===============================================================================#
+# Application module+s
+#==============================================================================#
+env_app = env_application.Clone()
+
+appl_sources = [
+                # ADC #
+                '../../../AUTOSAR_BSW/Modules/adc/src/Adc.c',
+                '../../../AUTOSAR_BSW/Modules/adc/src/Adc_Adc12bsarv2.c',
+                '../../../AUTOSAR_BSW/Modules/adc/src/Adc_Adc12bsarv2_Irq.c',
+                '../../../AUTOSAR_BSW/Modules/adc/src/Adc_Ipw.c',
+                '../../../AUTOSAR_BSW/Modules/adc/src/Adc_Pdb.c',
+                '../../../AUTOSAR_BSW/Modules/adc/src/Adc_Pdb_Irq.c',
+                # BSWM #
+                '../../../AUTOSAR_BSW/Modules/BswM/Implementation/BswM.c',
+                # CAN #
+                '../../../AUTOSAR_BSW/Modules/Can/src/Can.c',
+                '../../../AUTOSAR_BSW/Modules/Can/src/Can_Irq.c',
+                # CAN IF #
+                '../../../AUTOSAR_BSW/Modules/CanIf/src/CanIf.c',
+                # CAN SM #
+                '../../../AUTOSAR_BSW/Modules/CanSM/src/CanSM.c',
+                # CAN TP #
+                '../../../AUTOSAR_BSW/Modules/CanTp/src/CanTp.c',
+                # COM #
+                '../../../AUTOSAR_BSW/Modules/Com/src/Com.c',
+                '../../../AUTOSAR_BSW/Modules/Com/src/Com_Buffers.c',
+                '../../../AUTOSAR_BSW/Modules/Com/src/Com_Deserializer.c',
+                '../../../AUTOSAR_BSW/Modules/Com/src/Com_Gateway.c',
+                '../../../AUTOSAR_BSW/Modules/Com/src/Com_IPduGroupHdlr.c',
+                '../../../AUTOSAR_BSW/Modules/Com/src/Com_LLIf.c',
+                '../../../AUTOSAR_BSW/Modules/Com/src/Com_LMgt.c',
+                '../../../AUTOSAR_BSW/Modules/Com/src/Com_Notifications.c',
+                '../../../AUTOSAR_BSW/Modules/Com/src/Com_RxInv.c',
+                '../../../AUTOSAR_BSW/Modules/Com/src/Com_RxProcessing.c',
+                '../../../AUTOSAR_BSW/Modules/Com/src/Com_Serializer.c',
+                '../../../AUTOSAR_BSW/Modules/Com/src/Com_SignalFilterHdlr.c',
+                '../../../AUTOSAR_BSW/Modules/Com/src/Com_SignalIf.c',
+                '../../../AUTOSAR_BSW/Modules/Com/src/Com_Timer.c',
+                '../../../AUTOSAR_BSW/Modules/Com/src/Com_TxModeHdlr.c',
+                # COMM #
+                '../../../AUTOSAR_BSW/Modules/ComM/src/ComM.c',
+                # CRC #
+                '../../../AUTOSAR_BSW/Modules/crc/src/crc.c',
+                # DCM #
+                '../../../AUTOSAR_BSW/Modules/dcm/src/dcm.c',
+                '../../../AUTOSAR_BSW/Modules/dcm/src/dcm_debug.c',
+                '../../../AUTOSAR_BSW/Modules/dcm/src/dcm_ext.c',
+                '../../../AUTOSAR_BSW/Modules/dcm/src/dcm_rsrcmgr.c',
+                '../../../AUTOSAR_BSW/Modules/dcm/src/dcm_utils.c',
+                # DEM #
+                '../../../AUTOSAR_BSW/Modules/dem/src/dem.c',
+                # DET #
+                '../../../AUTOSAR_BSW/Modules/det/src/det.c',
+                # DET #
+                '../../../AUTOSAR_BSW/Modules/Dcm/src/Dcm.c',
+                '../../../AUTOSAR_BSW/Modules/Dcm/src/Dcm_Ext.c',
+                '../../../AUTOSAR_BSW/Modules/Dcm/src/Dcm_Debug.c',
+                '../../../AUTOSAR_BSW/Modules/Dcm/src/Dcm_RsrcMgr.c',
+                '../../../AUTOSAR_BSW/Modules/Dcm/src/Dcm_Utils.c',
+                # DIO #
+                '../../../AUTOSAR_BSW/Modules/dio/src/dio.c',
+                '../../../AUTOSAR_BSW/Modules/dio/src/dio_gpio.c',
+                # FEE #
+                '../../../AUTOSAR_BSW/Modules/fee/src/fee.c',
+                # FLS #
+                '../../../AUTOSAR_BSW/Modules/fls/src/fls.c',
+                '../../../AUTOSAR_BSW/Modules/fls/src/fls_ac.c',
+                '../../../AUTOSAR_BSW/Modules/fls/src/fls_flash.c',
+                '../../../AUTOSAR_BSW/Modules/fls/src/fls_flash_const.c',
+                '../../../AUTOSAR_BSW/Modules/fls/src/fls_ipw.c',
+                '../../../AUTOSAR_BSW/Modules/fls/src/fls_Qspi.c',
+                '../../../AUTOSAR_BSW/Modules/fls/src/fls_Qspi_Irq.c',
+                # GPT #
+                '../../../AUTOSAR_BSW/Modules/gpt/src/gpt.c',
+                '../../../AUTOSAR_BSW/Modules/gpt/src/gpt_ftm.c',
+                '../../../AUTOSAR_BSW/Modules/gpt/src/gpt_ipw.c',
+                '../../../AUTOSAR_BSW/Modules/gpt/src/gpt_lpit.c',
+                '../../../AUTOSAR_BSW/Modules/gpt/src/gpt_lptmr.c',
+                '../../../AUTOSAR_BSW/Modules/gpt/src/gpt_srtc.c',
+                # I2C #
+                '../../../AUTOSAR_BSW/Modules/i2c/src/cdd_i2c.c',
+                '../../../AUTOSAR_BSW/Modules/i2c/src/i2c_flexio.c',
+                '../../../AUTOSAR_BSW/Modules/i2c/src/i2c_ipw.c',
+                '../../../AUTOSAR_BSW/Modules/i2c/src/i2c_lpi2c.c',
+                '../../../AUTOSAR_BSW/Modules/i2c/src/i2c_lpi2c_irq.c',
+                 # ICU #
+                '../../../AUTOSAR_BSW/Modules/Icu/src/Icu_Port_Ci_Irq.c',
+                '../../../AUTOSAR_BSW/Modules/Icu/src/Icu_Port_Ci.c',
+                '../../../AUTOSAR_BSW/Modules/Icu/src/Icu.c',
+                '../../../AUTOSAR_BSW/Modules/Icu/src/Icu_Ipw.c',
+                '../../../AUTOSAR_BSW/CfgPrj/Appl/GenData/src/Icu_PBcfg.c',
+                '../../../AUTOSAR_BSW/CfgPrj/Appl/GenData/src/Icu_DmaNotification.c',
+                '../../../AUTOSAR_BSW/CfgPrj/Appl/GenData/src/Icu_Cfg.c',
+                '../../../AUTOSAR_BSW/Modules/Icu/src/Icu_Ftm.c',
+                '../../../AUTOSAR_BSW/Modules/Icu/src/Icu_LPit.c',
+                '../../../AUTOSAR_BSW/Modules/Icu/src/Icu_Lptmr.c',
+                # Mcl #
+                '../../../AUTOSAR_BSW/Modules/mcl/src/cdd_mcl.c',
+                '../../../AUTOSAR_BSW/Modules/mcl/src/ftm_common.c',
+                '../../../AUTOSAR_BSW/Modules/mcl/src/lpit_common.c',
+                '../../../AUTOSAR_BSW/Modules/mcl/src/lptmr_common.c',
+                '../../../AUTOSAR_BSW/Modules/mcl/src/mcl_dma.c',
+                '../../../AUTOSAR_BSW/Modules/mcl/src/mcl_dma_irq.c',
+                '../../../AUTOSAR_BSW/Modules/mcl/src/mcl_dmamux.c',
+                '../../../AUTOSAR_BSW/Modules/mcl/src/mcl_flexio_common.c',
+                '../../../AUTOSAR_BSW/Modules/mcl/src/mcl_flexio_irq.c',
+                '../../../AUTOSAR_BSW/Modules/mcl/src/mcl_ipw.c',
+                '../../../AUTOSAR_BSW/Modules/mcl/src/mcl_lmem.c',
+                '../../../AUTOSAR_BSW/Modules/mcl/src/mcl_trgmux.c',
+                # MCU #
+                '../../../AUTOSAR_BSW/Modules/mcu/src/Mcu.c',
+                '../../../AUTOSAR_BSW/Modules/mcu/src/Mcu_IPW.c',
+                '../../../AUTOSAR_BSW/Modules/mcu/src/Mcu_SCG.c',
+                '../../../AUTOSAR_BSW/Modules/mcu/src/Mcu_RCM.c',
+                '../../../AUTOSAR_BSW/Modules/mcu/src/Mcu_RCM_Irq.c',
+                '../../../AUTOSAR_BSW/Modules/mcu/src/Mcu_CMU.c',
+                '../../../AUTOSAR_BSW/Modules/mcu/src/Mcu_CMU_Irq.c',
+                '../../../AUTOSAR_BSW/Modules/mcu/src/Mcu_SMC.c',
+                '../../../AUTOSAR_BSW/Modules/mcu/src/Mcu_SIM.c',
+                '../../../AUTOSAR_BSW/Modules/mcu/src/Mcu_PMC.c',
+                '../../../AUTOSAR_BSW/Modules/mcu/src/Mcu_PMC_Irq.c',
+                '../../../AUTOSAR_BSW/Modules/mcu/src/Mcu_CortexM4.c',
+                '../../../AUTOSAR_BSW/Modules/mcu/src/Mcu_PCC.c',
+                '../../../AUTOSAR_BSW/Modules/mcu/src/Mcu_IPW_Irq.c',
+                # MEMIF #
+                '../../../AUTOSAR_BSW/Modules/memif/src/memif.c',
+                # NVM #
+                '../../../AUTOSAR_BSW/Modules/nvm/src/nvm.c',
+                '../../../AUTOSAR_BSW/Modules/nvm/src/nvm_act.c',
+                '../../../AUTOSAR_BSW/Modules/nvm/src/nvm_crc.c',
+                '../../../AUTOSAR_BSW/Modules/nvm/src/nvm_jobproc.c',
+                '../../../AUTOSAR_BSW/Modules/nvm/src/nvm_qry.c',
+                '../../../AUTOSAR_BSW/Modules/nvm/src/nvm_queue.c',
+                # NM #
+                # '../../../AUTOSAR_BSW/Modules/Nm/src/Nm.c',
+                # PDUR #
+                '../../../AUTOSAR_BSW/Modules/PduR/src/PduR.c',
+                '../../../AUTOSAR_BSW/Modules/PduR/src/PduR_Bm.c',
+                '../../../AUTOSAR_BSW/Modules/PduR/src/PduR_Fm.c',
+                '../../../AUTOSAR_BSW/Modules/PduR/src/PduR_IFQ.c',
+                '../../../AUTOSAR_BSW/Modules/PduR/src/PduR_Lock.c',
+                '../../../AUTOSAR_BSW/Modules/PduR/src/PduR_McQ.c',
+                '../../../AUTOSAR_BSW/Modules/PduR/src/PduR_RmIf.c',
+                '../../../AUTOSAR_BSW/Modules/PduR/src/PduR_RmTp.c',
+                '../../../AUTOSAR_BSW/Modules/PduR/src/PduR_RmTp_TxInst.c',
+                '../../../AUTOSAR_BSW/Modules/PduR/src/PduR_Sm.c',
+                # PORT #
+                '../../../AUTOSAR_BSW/Modules/port/src/Port.c',
+                '../../../AUTOSAR_BSW/Modules/port/src/Port_Ipw.c',
+                '../../../AUTOSAR_BSW/Modules/port/src/Port_Port_Ci.c',
+                # PWM #
+                '../../../AUTOSAR_BSW/Modules/pwm/src/pwm.c',
+                '../../../AUTOSAR_BSW/Modules/pwm/src/pwm_flexio.c',
+                '../../../AUTOSAR_BSW/Modules/pwm/src/pwm_ftm.c',
+                '../../../AUTOSAR_BSW/Modules/pwm/src/pwm_ipw.c',
+                # RTE #
+                '../../../AUTOSAR_BSW/Modules/rte/src/SchM_Adc.c',
+                '../../../AUTOSAR_BSW/Modules/rte/src/SchM_Dio.c',
+                '../../../AUTOSAR_BSW/Modules/rte/src/SchM_Fee.c',
+                '../../../AUTOSAR_BSW/Modules/rte/src/SchM_Fls.c',
+                '../../../AUTOSAR_BSW/Modules/rte/src/SchM_Gpt.c',
+                '../../../AUTOSAR_BSW/Modules/rte/src/SchM_I2c.c',
+                '../../../AUTOSAR_BSW/Modules/rte/src/SchM_Mcl.c',
+                '../../../AUTOSAR_BSW/Modules/rte/src/SchM_Mcu.c',
+                '../../../AUTOSAR_BSW/Modules/rte/src/SchM_Port.c',
+                '../../../AUTOSAR_BSW/Modules/rte/src/SchM_Pwm.c',
+                '../../../AUTOSAR_BSW/Modules/rte/src/SchM_Icu.c',
+                '../../../AUTOSAR_BSW/Modules/rte/src/SchM_Wdg.c',
+                # SPI #
+                # VSTDLIB #
+                '../../../AUTOSAR_BSW/Modules/VStdLib/src/vstdlib.c',
+                # GENERATED FILES #
+                '../../../AUTOSAR_BSW/CfgPrj/Appl/GenData/src/adc_cfg.c',
+                '../../../AUTOSAR_BSW/CfgPrj/Appl/GenData/src/adc_pbcfg.c',
+                '../../../AUTOSAR_BSW/CfgPrj/Appl/GenData/src/cdd_i2c_cfg.c',
+                '../../../AUTOSAR_BSW/CfgPrj/Appl/GenData/src/cdd_i2c_pbcfg.c',
+                '../../../AUTOSAR_BSW/CfgPrj/Appl/GenData/src/cdd_mcl_cfg.c',
+                '../../../AUTOSAR_BSW/CfgPrj/Appl/GenData/src/cdd_mcl_pbcfg.c',
+                '../../../AUTOSAR_BSW/CfgPrj/Appl/GenData/src/dio_cfg.c',
+                '../../../AUTOSAR_BSW/CfgPrj/Appl/GenData/src/fee_cfg.c',
+                '../../../AUTOSAR_BSW/CfgPrj/Appl/GenData/src/fls_cfg.c',
+                '../../../AUTOSAR_BSW/CfgPrj/Appl/GenData/src/fls_pbcfg.c',
+                '../../../AUTOSAR_BSW/CfgPrj/Appl/GenData/src/gpt_cfg.c',
+                '../../../AUTOSAR_BSW/CfgPrj/Appl/GenData/src/gpt_pbcfg.c',
+                '../../../AUTOSAR_BSW/CfgPrj/Appl/GenData/src/mcu_cfg.c',
+                '../../../AUTOSAR_BSW/CfgPrj/Appl/GenData/src/mcu_pbcfg.c',
+                '../../../AUTOSAR_BSW/CfgPrj/Appl/GenData/src/port_cfg.c',
+                '../../../AUTOSAR_BSW/CfgPrj/Appl/GenData/src/port_pbcfg.c',
+                '../../../AUTOSAR_BSW/CfgPrj/Appl/GenData/src/pwm_pbcfg.c',
+                '../../../AUTOSAR_BSW/CfgPrj/Appl/GenData/Dcm_Lcfg.c',
+                '../../../AUTOSAR_BSW/CfgPrj/Appl/GenData/Dcm_PBcfg.c',
+                '../../../AUTOSAR_BSW/CfgPrj/Appl/GenData/Det_Cfg.c',
+                '../../../AUTOSAR_BSW/CfgPrj/Appl/GenData/MemIf_Cfg.c',
+                '../../../AUTOSAR_BSW/CfgPrj/Appl/GenData/NvM_CfG.c',
+                '../../../AUTOSAR_BSW/CfgPrj/Appl/GenData/CanIf_Lcfg.c',
+                '../../../AUTOSAR_BSW/CfgPrj/Appl/GenData/CanIf_PBcfg.c',
+                '../../../AUTOSAR_BSW/CfgPrj/Appl/GenData/CanSM_Lcfg.c',
+                '../../../AUTOSAR_BSW/CfgPrj/Appl/GenData/Can_Lcfg.c',
+                '../../../AUTOSAR_BSW/CfgPrj/Appl/GenData/Can_PBcfg.c',
+                '../../../AUTOSAR_BSW/CfgPrj/Appl/GenData/CanTp_Lcfg.c',
+                '../../../AUTOSAR_BSW/CfgPrj/Appl/GenData/CanTp_PBcfg.c',
+                '../../../AUTOSAR_BSW/CfgPrj/Appl/GenData/ComM_Lcfg.c',
+                '../../../AUTOSAR_BSW/CfgPrj/Appl/GenData/ComM_PBcfg.c',
+                '../../../AUTOSAR_BSW/CfgPrj/Appl/GenData/Com_Lcfg.c',
+                '../../../AUTOSAR_BSW/CfgPrj/Appl/GenData/Com_PBcfg.c',
+                '../../../AUTOSAR_BSW/CfgPrj/Appl/GenData/dcm_Lcfg.c',
+                '../../../AUTOSAR_BSW/CfgPrj/Appl/GenData/dcm_pbcfg.c',
+                '../../../AUTOSAR_BSW/CfgPrj/Appl/GenData/dem_lcfg.c',
+                '../../../AUTOSAR_BSW/CfgPrj/Appl/GenData/dem_pbcfg.c',
+                '../../../AUTOSAR_BSW/CfgPrj/Appl/GenData/PduR_Lcfg.c',
+                '../../../AUTOSAR_BSW/CfgPrj/Appl/GenData/PduR_PBcfg.c',
+                '../../../AUTOSAR_BSW/CfgPrj/Appl/GenData/BswM_Lcfg.c',
+                '../../../AUTOSAR_BSW/CfgPrj/Appl/GenData/src/CDD_Mcl_PBcfg.c',
+               ]
+
+objects += env_app.Object(appl_sources)
+env_app['CCFLAGS'].remove('-Om')
+add_CCFLAGS_01 = ['-Ohs']
+env_app.Append(CCFLAGS=add_CCFLAGS_01)
+
+#==============================================================================#
+# Return objects
+#==============================================================================#
+Return('objects')

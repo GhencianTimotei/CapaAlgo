@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BatMon>
+  <BatMonGeneralConfig EnableCallbackUnknown="true" RangeChangeCallback="batMon_RangeCheckCbk" ADCReadInterface="MeasureSupply_getUbattVoltage" ADCBitLength="10" ADCReadIfReturnType="U16" Hysteresis="10" />
+  <BatMonRangeConfig>
+    <BatMonRange RangeName="COM_OFF_1" ThresholdLow="1" ThresholdHigh="222" EnableCallback="true" NormalOperatingRange="false" />
+    <BatMonRange RangeName="UNDERVOLTAGE" ThresholdLow="222" ThresholdHigh="273" EnableCallback="true" NormalOperatingRange="false" />
+    <BatMonRange RangeName="NORMAL" ThresholdLow="273" ThresholdHigh="586" EnableCallback="true" NormalOperatingRange="true" />
+    <BatMonRange RangeName="OVERVOLTAGE" ThresholdLow="586" ThresholdHigh="664" EnableCallback="true" NormalOperatingRange="false" />
+    <BatMonRange RangeName="COM_OFF_2" ThresholdLow="664" ThresholdHigh="1023" EnableCallback="true" NormalOperatingRange="false" />
+  </BatMonRangeConfig>
+</BatMon>

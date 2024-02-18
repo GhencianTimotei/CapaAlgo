@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<EcuM>
+  <EcuMFixedGeneral EcuMDevErrorDetect="false" EcuMIncludeDet="false" EcuMMainFunctionPeriod="10" EcuMVersionInfoApi="false" EcuMIncludeComM="true" EcuMTTIIEnabled="false" EcuMTTIIWakeupSource="ECUM_WKSOURCE_NONE" EcuMRunMinimumDuration="200" EcuMCalloutDriverInitZero="true" EcuMCalloutDriverInitOne="true" EcuMCalloutDriverInitTwo="true" EcuMCalloutDriverInitThree="true" EcuMCalloutOnModeChange="false" EcuMEnableResetReasonDetection="false" EcuM_IncludeHeader="Mcu.h" ECUM_DISABLE_ALL_INTERRUPTS="SuspendAllInterrupts()" ECUM_ENABLE_ALL_INTERRUPTS="ResumeAllInterrupts()" EcuMIncludeNvramWriteall="false" EcuMNvramWriteallTimeout="10000" ECUM_START_OS="StartOS(OSDEFAULTAPPMODE)" ECUM_SHUTDOWN_OS="ShutdownOS(0)" ECUM_LOCK_SCHEDULER="GetResource(RES_SCHEDULER)" ECUM_UNLOCK_SCHEDULER="ReleaseResource(RES_SCHEDULER)" EcuM_IncludeDefineHeader="Os.h" />
+  <EcuMConfiguration>
+    <EcuMFixedConfiguration>
+      <EcuMComMCommunicationAllowedList>
+        <ComMChannels ComMChannelRef="ComMConf_ComMChannel_CN_HCP4_CANFD01_152fd6c6" />
+      </EcuMComMCommunicationAllowedList>
+      <EcuMUserConfig>
+        <EcuMFixedUser UserName="ECUM_USER_KEEP_RUN_STATE" />
+        <EcuMFixedUser UserName="E_ECUM_VR_SENSOR" />
+        <EcuMFixedUser UserName="E_ECUM_ER_SENSOR" />
+        <EcuMFixedUser UserName="E_ECUM_INDUCTIVE" />
+        <EcuMFixedUser UserName="E_ECUM_VOLT_MON" />
+        <EcuMFixedUser UserName="E_ECUM_VA_LED" />
+        <EcuMFixedUser UserName="E_ECUM_NFC_LIB" />
+        <EcuMFixedUser UserName="E_ECUM_NFC_APP" />
+      </EcuMUserConfig>
+      <EcuMWakeupSources>
+        <ECUM_WKSOURCE_POWER EcuMWakeupSourceId="ECUM_WKSOURCE_POWER" EcuMValidationTimeout="0" />
+        <ECUM_WKSOURCE_RESET EcuMWakeupSourceId="ECUM_WKSOURCE_RESET" EcuMValidationTimeout="0" />
+        <ECUM_WKSOURCE_INTERNAL_RESET EcuMWakeupSourceId="ECUM_WKSOURCE_INTERNAL_RESET" EcuMValidationTimeout="0" />
+        <ECUM_WKSOURCE_INTERNAL_WDG EcuMWakeupSourceId="ECUM_WKSOURCE_INTERNAL_WDG" EcuMValidationTimeout="0" />
+        <ECUM_WKSOURCE_EXTERNAL_WDG EcuMWakeupSourceId="ECUM_WKSOURCE_EXTERNAL_WDG" EcuMValidationTimeout="0" />
+        <EcuMWakeupSource EcuMWakeupSourceId="ECUM_WAKEUP_CAN" EcuMValidationTimeout="0" EcuComMChannelRef="" />
+        <EcuMWakeupSource EcuMWakeupSourceId="ECUM_WAKEUP_ALGO" EcuMValidationTimeout="0" EcuComMChannelRef="" />
+        <EcuMWakeupSource EcuMWakeupSourceId="ECUM_WAKEUP_LED" EcuMValidationTimeout="0" EcuComMChannelRef="" />
+        <EcuMWakeupSource EcuMWakeupSourceId="ECUM_WAKEUP_NFC_LIB" EcuMValidationTimeout="0" EcuComMChannelRef="" />
+        <EcuMWakeupSource EcuMWakeupSourceId="ECUM_WAKEUP_NFC_APP" EcuMValidationTimeout="0" EcuComMChannelRef="" />
+      </EcuMWakeupSources>
+      <EcuMSleepModes>
+        <EcuMSleepMode EcuMSleepModeId="ECUM_SLEEP_LPM" EcuMSleepModeSuspend="false" EcuMSleepModeMcuModeRef="MCU_VLPR_MODE" EcuMPredefinedWakeUp_POWER="true" EcuMPredefinedWakeUp_RESET="false" EcuMPredefinedWakeUp_INTERNAL_RESET="true" EcuMPredefinedWakeUp_INTERNAL_WDG="false" EcuMPredefinedWakeUp_EXTERNAL_WDG="false">
+          <EcuM_UserDependent_WakeupSource EcuMWakeupSourceMask="ECUM_WAKEUP_CAN" />
+          <EcuM_UserDependent_WakeupSource EcuMWakeupSourceMask="ECUM_WAKEUP_ALGO" />
+          <EcuM_UserDependent_WakeupSource EcuMWakeupSourceMask="ECUM_WAKEUP_LED" />
+          <EcuM_UserDependent_WakeupSource EcuMWakeupSourceMask="ECUM_WAKEUP_NFC_LIB" />
+          <EcuM_UserDependent_WakeupSource EcuMWakeupSourceMask="ECUM_WAKEUP_NFC_APP" />
+        </EcuMSleepMode>
+      </EcuMSleepModes>
+      <EcuMDefaultShutdownTarget EcuMDefaultState="ECUM_STATE_SLEEP" EcuMDefaultSleepModeRef="ECUM_SLEEP_LPM" />
+    </EcuMFixedConfiguration>
+  </EcuMConfiguration>
+</EcuM>

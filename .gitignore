@@ -1,0 +1,22 @@
+# Compiled C file
+*.pyc
+
+/BUILD_SUPPORT/BuildOutput/
+*.dblite
+~$*.doc
+**/.dm/*
+/BUILD_SUPPORT/IDE/debug/Debug/Obj/*
+
+# The AUTOSAR files that are not used. 
+*.bak
+/AUTOSAR_BSW/CfgPrj/Log/*
+*.dcusr
+*.~lock
+/AUTOSAR_BSW/CfgPrj/Appl/GenData/RteCache/*
+/AUTOSAR_BSW/GenFiles/*
+/AUTOSAR_BSW/GenData/*
+BUILD_SUPPORT/IDE/sublime/AU513_eTab_V5.sublime-workspace
+/BUILD_SUPPORT/BuildTool/PostProc/out/*
+/BUILD_SUPPORT/BuildTool/PostProc/tmp/*
+/BUILD_SUPPORT/IDE/debug/settings/*
+/BUILD_SUPPORT/ODX/*.odx

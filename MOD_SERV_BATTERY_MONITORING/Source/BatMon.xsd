@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--Created with Liquid Studio 2017 - XML Editor Edition 15.1.16.7872 (https://www.liquid-technologies.com)-->
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="BatMon">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="BatMonGeneralConfig" minOccurs="1" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:attribute name="EnableCallbackUnknown" default="false" type="xs:boolean">
+                            <xs:annotation>
+                                <xs:documentation>Enable / disable callback for unknown range (in case ADC conversion fails).</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="RangeChangeCallback">
+                            <xs:annotation>
+                                <xs:documentation>The name of the callback function used when the range is changed.
+The prototype of this function will be: extern void function_name(BatMon_RangeStateType BatMon_NewRange);
+In order for this attribute to be enabled, at least one of the following attributes must be enabled before: the EnableCallbackUnknown attribute from BatMonGeneralConfig, or EnableCallback attribute for at least one BatMonRange.</xs:documentation>
+                            </xs:annotation>
+                            <xs:simpleType>
+                                <xs:restriction base="xs:string">
+                                    <xs:pattern value="(^$)|(^[A-Za-z_][A-Za-z0-9_]*$)" />
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:attribute>
+                        <xs:attribute name="ADCReadInterface">
+                            <xs:annotation>
+                                <xs:documentation>The name of the interface function that returns the value read from ADC.
+Its prototype will be: extern BatMon_AdcValueType function_name(void);
+</xs:documentation>
+                            </xs:annotation>
+                            <xs:simpleType>
+                                <xs:restriction base="xs:string">
+                                    <xs:pattern value="^[A-Za-z_][A-Za-z0-9_]*$" />
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:attribute>
+                        <xs:attribute name="ADCBitLength">
+                            <xs:annotation>
+                                <xs:documentation>Specify the resolution of the ADC. Based on this bit length, the return type for the ADC read interface is calculated and the ADCReadIfReturnType attribute is updated dynamically. After setting the bit length, please click another textbox in order for the ADCReadIfReturnType attribute to be updated. </xs:documentation>
+                            </xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:integer">
+								  <xs:minInclusive value="1"/>
+								  <xs:maxInclusive value="32"/>
+								</xs:restriction>
+							 </xs:simpleType>
+                        </xs:attribute>
+                        <xs:attribute name="ADCReadIfReturnType" use="required">
+                            <xs:annotation>
+                                <xs:documentation>The data type of the value returned by ADC interface. It is calculated automatically based on ADCBitLength attribute and can have the following values: U8, U16 or U32.</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="Hysteresis" type="xs:unsignedInt">
+                            <xs:annotation>
+                                <xs:documentation>The value that will be added or subtracted from a range limit, when the voltage transitions a range limit towards the normal range.
+The maximum value of the hysteresis must have the same bit length as the ADC bit length. The value of the hysteresis has to be smaller than the smallest configured range (the difference between ThresholdHigh and ThresholdLow).</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="BatMonRangeConfig" minOccurs="1" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="BatMonRange" minOccurs="1" maxOccurs="255">
+                                <xs:complexType>
+                                    <xs:attribute name="RangeName">
+                                        <xs:annotation>
+                                            <xs:documentation>The name of the range. It will appear as comment in the array of ranges defined by the user, and will be returned to the user by the function batMon_getCurrentState_UT.
+The name must be unique.											</xs:documentation>
+                                        </xs:annotation>
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:pattern value="^[A-Za-z_][A-Za-z0-9_]*$" />
+											</xs:restriction>
+										</xs:simpleType>
+                                    </xs:attribute>
+                                    <xs:attribute name="ThresholdLow" type="xs:unsignedInt">
+                                        <xs:annotation>
+                                            <xs:documentation>The low limit of this range. This value must have, at maximum, the same bit length as the ADC bit length.
+The low threshold is included in this range.</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:attribute>
+                                    <xs:attribute name="ThresholdHigh" type="xs:unsignedInt">
+                                        <xs:annotation>
+                                            <xs:documentation>The high limit of this range. This value must have, at maximum, the same bit length as the ADC bit length.
+The high threshold is not included in this range, it shall be included in the next range as low threshold.
+If this is the last range, then the high threshold will be included in this range.</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:attribute>
+                                    <xs:attribute name="EnableCallback" default="false" type="xs:boolean">
+                                        <xs:annotation>
+                                            <xs:documentation>Enable / disable callback function for entering this range.</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:attribute>
+                                    <xs:attribute name="NormalOperatingRange" default="false" type="xs:boolean">
+                                        <xs:annotation>
+                                            <xs:documentation>Please check if this is the normal operating range, otherwise uncheck.
+There must be only one normal range in all the defined ranges.</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:attribute>
+                                </xs:complexType>
+								<xs:unique id="RangeNameId_Key" name="RangeNameId_UniqKey">
+									<xs:selector xpath="BatMon/BatMonRangeConfig/BatMonRange" />
+									<xs:field xpath="@RangeName" />
+                                </xs:unique>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Scripts" minOccurs="1" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:attribute name="path1" fixed="BatMon_Script.cs" type="xs:string" use="required" />
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

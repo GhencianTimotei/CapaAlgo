@@ -1,0 +1,166 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--Created with Liquid Studio 2017 - XML Editor Edition 15.1.16.7872 (https://www.liquid-technologies.com)-->
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <!--
+	<xs:include schemaLocation="..\..\MOD_MCAL_MCU\Source\Mcu.xsd" />
+	-->
+    <xs:element name="OsMcal">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="OsMcalGeneral" minOccurs="1" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="OsTick" minOccurs="1" maxOccurs="1">
+                                <xs:complexType>
+                                    <xs:attribute name="OsTickTimeUs" use="required">
+                                        <xs:annotation>
+                                            <xs:documentation>OS tick time in microseconds. OsServ uses this attribute value for calculating tasks cycle time, if its value is changed, OsServ shall be generated again after OsMcal is generated.</xs:documentation>
+                                        </xs:annotation>
+                                        <xs:simpleType>
+                                            <xs:restriction base="xs:int">
+                                                <xs:minInclusive value="1" />
+                                            </xs:restriction>
+                                        </xs:simpleType>
+                                    </xs:attribute>
+                                    <xs:attribute name="OsSelectTimerInterface" default="OS_TIMER_EXTERNAL">
+                                        <xs:annotation>
+                                            <xs:documentation>Selects which implementation is used to handle the timer which will generate the OS tick.
+"OS_TIMER_RJ_RL78": Use TimerRJ RL78, the implementation for handling the timer is part of the OS module. OS offers interfaces for init, start, stop timer, enable/disable timer interrupt, clear interrupt flag and interrupt routine. User shall call the interfaces into the integration project.
+"OS_TIMER_BSW_GPT": Use a GPT timer from BSW GPT module. Initialize of the timer is done by GPT module, OS offers interfaces for interrupt routine, enable/disable timer interrupt, start/stop timer with the proper parameters according to the configuration of OS, MCU and GPT. User shall call the interfaces into the integration project.
+"OS_TIMER_OSTM0_RH850": Use OS Timer OSTM RH850 F1L, the implementation for handling the timer is part of the OS module. OS offers interfaces for init, start, stop timer, enable/disable timer interrupt, clear interrupt flag and interrupt routine. User shall call the interfaces into the integration project.
+"OS_TIMER_SYSTICK_S32K": Use OS System Timer S32K, the implementation for handling the timer is part of the OS module. OS offers interfaces for init, start, stop timer, enable/disable timer interrupt, clear interrupt flag and interrupt routine. User shall call the interfaces into the integration project.
+"OS_TIMER_EXTERNAL": OS timer is handled externally, OS offers only the interrupt routine for the timer. User shall implement and call interfaces for init, start, stop timer, enable/disable timer interrupt into the integration project.
+For more information related to the possible use cases see OS Mcal User Manual. </xs:documentation>
+                                        </xs:annotation>
+                                        <xs:simpleType>
+                                            <xs:restriction base="xs:string">
+                                                <xs:enumeration value="OS_TIMER_RJ_RL78" />
+                                                <xs:enumeration value="OS_TIMER_BSW_GPT" />
+                                                <xs:enumeration value="OS_TIMER_OSTM0_RH850" />
+                                                <xs:enumeration value="OS_TIMER_SYSTICK_S32K" />
+                                                <xs:enumeration value="OS_TIMER_EXTERNAL" />
+                                            </xs:restriction>
+                                        </xs:simpleType>
+                                    </xs:attribute>
+                                    <xs:attribute name="OsClockSourceFreqCalc" default="Automatic">
+                                        <xs:annotation>
+                                            <xs:documentation>
+Automatic: The frequency of the clock source used for tick generation is calculated automatically from Mcu configuration - RL78 TimerRJ (must be available in Sirius).
+User input: The frequency of the clock source used for tick generation is user defined into attribute OSFreqUserInput</xs:documentation>
+                                        </xs:annotation>
+                                        <xs:simpleType>
+                                            <xs:restriction base="xs:string">
+                                                <xs:enumeration value="Automatic" />
+                                                <xs:enumeration value="User input" />
+                                            </xs:restriction>
+                                        </xs:simpleType>
+                                    </xs:attribute>
+                                    <xs:attribute name="OsFreqUserInput" default="0.0" type="xs:float" use="optional">
+                                        <xs:annotation>
+                                            <xs:documentation>Frequency in MHz of the clock source used for OS tick generation. This attribute shall be configured in case OsClockSourceFreqCalc is set to "User input"</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:attribute>
+                                    <xs:attribute name="OsTickClockSource" type="xs:string" use="optional">
+                                        <xs:annotation>
+                                            <xs:documentation>This attribute is required only in case OsClockSourceFreqCalc is set to "Automatic" and OS_TIMER_RJ_RL78 is selected into OsSelectTimerInterface attribute.
+Value of McuClockSettingId (Mcu configuration, McuClockSetting) is used for OS tick generation.</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:attribute>
+                                    <xs:attribute name="OsGptTimer" type="xs:string" use="optional">
+                                        <xs:annotation>
+                                            <xs:documentation>This attribute is required only in case OsSelectTimerInterface is set to "BSW GPT Timer".
+Values from GPT configuration are used for OS tick generation (must be available in Sirius).</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:attribute>
+                                    <xs:attribute name="OsIsrUsedInSleepMode" default="false" type="xs:boolean">
+                                        <xs:annotation>
+                                            <xs:documentation>Enable/disable usage of the OS interrupt in case alarms are stopped, for example to be used for wakeup from LPM. If enabled configured OsSleepModeInterface will be called.
+true: OS isr is used when alarms are stopped
+false: OS isr is not used when alarms are stopped</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:attribute>
+                                    <xs:attribute name="OsSleepModeInterface" use="optional">
+                                        <xs:annotation>
+                                            <xs:documentation>This attribute is required only in case OsIsrUsedInSleepMode is set to TRUE.
+User shall configure a user defined interface which will be called when the OS tick interrupt is generated while alarms are stopped, for example Ecu is in sleep mode.
+Function must have the following prototype: extern void FuncName(void);</xs:documentation>
+                                        </xs:annotation>
+                                        <xs:simpleType>
+                                            <xs:restriction base="xs:string">
+                                                <xs:whiteSpace value="collapse" />
+                                            </xs:restriction>
+                                        </xs:simpleType>
+                                    </xs:attribute>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <!--        <xs:attribute name="OsStackMonitoring" fixed="false" type="xs:boolean" use="required">
+                            <xs:annotation>
+                                <xs:documentation>Select stack monitoring
+true: Stacks are monitored 
+false: Stacks are not monitored</xs:documentation>
+                            </xs:annotation>
+					
+                        </xs:attribute>
+					   	-->
+                        <xs:attribute name="OsControllerFamily" default="RL78">
+                            <xs:annotation>
+                                <xs:documentation>Select the uc family which is used into the project where OS will be integrated. Actual McalOs offers support only for RL78, RH850 F1L and S32K, if other uc is used, the generated file shall be manually adapted. See user manual for more details. </xs:documentation>
+                            </xs:annotation>
+                            <xs:simpleType>
+                                <xs:restriction base="xs:string">
+                                    <xs:enumeration value="RL78" />
+                                    <xs:enumeration value="RH850" />
+                                    <xs:enumeration value="S32K" />
+                                    <xs:enumeration value="Other uc family" />
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:attribute>
+                        <xs:attribute name="OsDisableInterrupts" default="__disable_interrupt()">
+                            <xs:annotation>
+                                <xs:documentation>Compiler intrinsic function used to disable interrupts.
+e.g:
+IAR RL78  -&gt; __disable_interrupt() 
+IAR S32K  -&gt; __asm(" cpsid i")
+GHS RH850 -&gt; __DI()</xs:documentation>
+                            </xs:annotation>
+                            <xs:simpleType>
+                                <xs:restriction base="xs:string" />
+                            </xs:simpleType>
+                        </xs:attribute>
+                        <xs:attribute name="OsEnableInterrupts" default="__enable_interrupt()">
+                            <xs:annotation>
+                                <xs:documentation>Compiler intrinsic function used to enable interrupts.
+e.g:
+IAR RL78  -&gt; __enable_interrupt() 
+IAR S32K  -&gt; __asm(" cpsie i")
+GHS RH850 -&gt; __EI()</xs:documentation>
+                            </xs:annotation>
+                            <xs:simpleType>
+                                <xs:restriction base="xs:string" />
+                            </xs:simpleType>
+                        </xs:attribute>
+                        <xs:attribute name="OsIncludeHeaderFile" use="required">
+                            <xs:annotation>
+                                <xs:documentation>Add necessary include header file for controller specific data, e.g. I/O registers. For RL78 controller in case MCU module is provided by BSW, Mcu.h can be included.  </xs:documentation>
+                            </xs:annotation>
+                            <xs:simpleType>
+                                <xs:restriction base="xs:string" />
+                            </xs:simpleType>
+                        </xs:attribute>
+                    </xs:complexType>
+                    <!--<xs:keyref name="McuClockSourceKeyRef" refer="McuCpuClockKey">
+                        <xs:selector xpath="Os/OsGeneral/OsTick" />
+                        <xs:field xpath="@OsTickClockSource" />
+                    </xs:keyref>
+					-->
+                </xs:element>
+                <xs:element name="Scripts" minOccurs="1" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:attribute name="Path" fixed="OsMcalGenerationScript.cs" type="xs:string" use="required" />
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

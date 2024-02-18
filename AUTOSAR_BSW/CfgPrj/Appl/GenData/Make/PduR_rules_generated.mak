@@ -1,0 +1,3 @@
+
+GENERATED_SOURCE_FILES  += $(GENDATA_DIR)\PduR_Lcfg.c $(GENDATA_DIR)\PduR_PBcfg.c
+

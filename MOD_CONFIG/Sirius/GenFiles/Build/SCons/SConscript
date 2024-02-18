@@ -1,0 +1,23 @@
+Import('env_application')
+
+objects = []
+
+#===============================================================================#
+# Application module+s
+#==============================================================================#
+env_app = env_application.Clone()
+
+appl_sources = [
+                 '../../Source/Os_LCfg.c',
+                 '../../Source/Os_Mcal_Int_Cfg.s',
+                 '../../Source/EcuM_Lcfg.c',
+                 '../../Source/EcuM_PBcfg.c',
+                 '../../Source/BatMon_LCfg.c',
+               ]
+
+objects += env_app.Object(appl_sources)
+
+#==============================================================================#
+# Return objects
+#==============================================================================#
+Return('objects')

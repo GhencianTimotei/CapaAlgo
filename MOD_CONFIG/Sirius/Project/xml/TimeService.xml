@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TimeService>
+  <TimeServGeneral Predefined_Timer="GPT_PREDEF_TIMER_1US_16BIT" Uc_Used="S32K" FTM_ModuleIndex="0" />
+  <TimeServConfig>
+    <TimeServ_32BitsSoftwareTimer SoftwareTimer_Name="NFC_Generic_timer_0" />
+    <TimeServ_32BitsSoftwareTimer SoftwareTimer_Name="NFC_Generic_timer_1" />
+    <TimeServ_32BitsSoftwareTimer SoftwareTimer_Name="NFC_Generic_timer_2" />
+    <TimeServ_32BitsSoftwareTimer SoftwareTimer_Name="NFC_Generic_timer_3" />
+    <TimeServ_32BitsSoftwareTimer SoftwareTimer_Name="NFC_Generic_timer_4" />
+    <TimeServ_32BitsSoftwareTimer SoftwareTimer_Name="NFC_Generic_timer_5" />
+    <TimeServ_32BitsSoftwareTimer SoftwareTimer_Name="NFC_Generic_timer_6" />
+    <TimeServ_32BitsSoftwareTimer SoftwareTimer_Name="NFC_Generic_timer_7" />
+    <TimeServ_32BitsSoftwareTimer SoftwareTimer_Name="NFC_Generic_timer_8" />
+    <TimeServ_32BitsSoftwareTimer SoftwareTimer_Name="NFC_Generic_timer_9" />
+    <TimeServ_SlowTimer_1ms SoftwareTimer_Name="NFC_diagnostic_SlowTimer_1ms" />
+    <TimeServ_SlowTimer_1ms SoftwareTimer_Name="ISO_TP_RECEPTION_TIMER" />
+    <TimeServ_SlowTimer_1ms SoftwareTimer_Name="ISO_TP_TRANSMISSION_TIMER" />
+    <TimeServ_SlowTimer_1ms SoftwareTimer_Name="NfcFuncGateway_Wakeup_Timer" />
+    <TimeServ_SlowTimer_1ms SoftwareTimer_Name="NfcFuncGateway_PollingDelay_Timer" />
+    <TimeServ_SlowTimer_1ms SoftwareTimer_Name="NfcFuncGateway_LpcdCalibration_Timer" />
+    <TimeServ_SlowTimer_1ms SoftwareTimer_Name="NfcFuncGateway_WaitingCommError_Timer" />
+    <TimeServ_SlowTimer_1ms SoftwareTimer_Name="NfcFuncGateway_RetryAuthenticationRequest_Timer" />
+    <TimeServ_SlowTimer_1ms SoftwareTimer_Name="NfcFuncGateway_SilentDevicePresenceCheck_Timer" />
+    <TimeServ_SlowTimer_1ms SoftwareTimer_Name="NfcFuncGateway_Routing_Timer" />
+    <TimeServ_SlowTimer_1ms SoftwareTimer_Name="NfcFuncGateway_Transmit_Timer" />
+    <TimeServ_SlowTimer_1ms SoftwareTimer_Name="NfcFuncGateway_ActivateESM_Timer" />
+    <TimeServ_SlowTimer_1ms SoftwareTimer_Name="NfcFuncGateway_KeepNfcDeviceSignalOn_Timer" />
+  </TimeServConfig>
+</TimeService>

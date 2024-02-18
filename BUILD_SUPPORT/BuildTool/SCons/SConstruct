@@ -1,0 +1,289 @@
+import os
+import sys
+import os.path
+import atexit
+import PreBuildActions
+import PostBuildActions
+
+#==============================================================================#
+# 0. Build Environments Preparations 
+#==============================================================================#
+#CONST_COMPILER_VERSION = ["iccarm.exe", " --version ", "V8.32.3.193/W32"]
+CONST_COMPILER_VERSION = ["iccarm.exe", " --version ", "V8.11.2"]
+vars = Variables(None, ARGUMENTS)
+vars.Add(EnumVariable('BUILD_TYPE', 'Type of build to use', 'release',  allowed_values=('debug', 'release', 'optimized', 'preprocess')))
+vars.Add(EnumVariable('PRE_BUILD_ACTION', 'Actions to do before build', 'version_check',  allowed_values=('all', 'version_check' , 'none', 'Linklist_Verification')))
+vars.Add(EnumVariable('POST_BUILD_ACTION', 'Actions to do after build', 'release',  allowed_values=('release', 'all', 'extended'))) 
+
+#==============================================================================#
+# 1. Setup of the application environment.
+#==============================================================================#
+env_base = Environment(variables = vars,tools=['base'])
+if PreBuildActions.main(CONST_COMPILER_VERSION, env_base['PRE_BUILD_ACTION']) == False: Exit(2)
+
+buildDir = '../../BuildOutput/HufBSW_S32K144'
+Export('buildDir')
+if not os.path.exists(buildDir): os.makedirs(buildDir)
+
+
+env_base['VARIANT_DIR'] = buildDir
+# In case of 'duplicate =1' the src files are copied to build dir
+env_base.VariantDir(buildDir, '../../../', duplicate=0)
+
+#===================Include Folders for target compiler=============
+env_base.Append(APPL_INCLUDES = [ 
+
+                 #Include_Headers#
+                '#/../../../MOD_SERV_PROG_FRAME/Source',
+                '#/../../../AUTOSAR_BSW/Modules/adc/include',
+                '#/../../../AUTOSAR_BSW/Modules/crc/include',
+                 #'#/../../../AUTOSAR_BSW/Modules/det/include',
+                '#/../../../AUTOSAR_BSW/Modules/dcm/include',
+                '#/../../../AUTOSAR_BSW/Modules/dio/include',
+                '#/../../../AUTOSAR_BSW/Modules/dcm/include',
+                '#/../../../AUTOSAR_BSW/Modules/det/include',
+                '#/../../../AUTOSAR_BSW/Modules/dem/include',
+                '#/../../../AUTOSAR_BSW/Modules/fee/include',
+                '#/../../../AUTOSAR_BSW/Modules/fls/include',
+                '#/../../../AUTOSAR_BSW/Modules/gpt/include',
+                '#/../../../AUTOSAR_BSW/Modules/i2c/include',
+                '#/../../../AUTOSAR_BSW/Modules/mcl/include',
+                '#/../../../AUTOSAR_BSW/Modules/mcu/include',
+                '#/../../../AUTOSAR_BSW/Modules/memif/include',
+                '#/../../../AUTOSAR_BSW/Modules/nvm/include',
+                '#/../../../AUTOSAR_BSW/Modules/port/include',
+                '#/../../../AUTOSAR_BSW/Modules/pwm/include',
+                '#/../../../AUTOSAR_BSW/Modules/Icu/include',
+                '#/../../../AUTOSAR_BSW/Modules/StandardFiles/include',
+                '#/../../../AUTOSAR_BSW/Modules/Rte/include',
+                '#/../../../AUTOSAR_BSW/Modules/ComM/Implementation',
+                '#/../../../AUTOSAR_BSW/Modules/CanTrcv_30_Tja1040/include',
+                '#/../../../AUTOSAR_BSW/Modules/Can/include',
+                '#/../../../AUTOSAR_BSW/Modules/CanIf/include',
+                '#/../../../AUTOSAR_BSW/Modules/CanNm/include',
+                '#/../../../AUTOSAR_BSW/Modules/CanSM/include',
+                '#/../../../AUTOSAR_BSW/Modules/CanTp/include',
+                '#/../../../AUTOSAR_BSW/Modules/Com/include',
+                '#/../../../AUTOSAR_BSW/Modules/PduR/include',
+                '#/../../../AUTOSAR_BSW/Modules/ComM/include',
+                '#/../../../AUTOSAR_BSW/Modules/Nm/include',
+                '#/../../../AUTOSAR_BSW/Modules/BswM/Implementation',
+                '#/../../../AUTOSAR_BSW/Modules/VStdLib/include',
+                '#/../../../AUTOSAR_BSW/CfgPrj/Appl/GenData/Components',
+                '#/../../../AUTOSAR_BSW/CfgPrj/Appl/GenData/include',
+                '#/../../../AUTOSAR_BSW/CfgPrj/Appl/GenData',
+                '#/../../../MOD_CONFIG/Sirius/GenFiles/Source',
+                '#/../../../STUBS/MOD_TEMP_STUBS/Source',
+                '#/../../../STUBS/MOD_TEMP_STUBS/Source/memmap',
+                '#/../../../MOD_SERV_FBLBMHDR/Source',
+                '#/../../../MOD_SERV_OS/Source',
+                '#/../../../MOD_MCAL_OS/Source',
+                '#/../../../MOD_SERV_ECU_MNG/Source',
+                '#/../../../MOD_ECUAL_LDC_3114/Source',
+                '#/../../../MOD_SERV_INDUCTIVE_SENSOR_ALGO/Source',
+                '#/../../../MOD_SERV_BATTERY_MONITORING/Source',
+                '#/../../../MOD_SERV_MEASURE_SUPPLY/Source',
+                '#/../../../MOD_SERV_PDL/Source',
+                '#/../../../MOD_SERV_CAPA_SENSOR/MOD_SERV_MCVD_SENSOR/Source',
+                '#/../../../MOD_SERV_CAPA_SENSOR/MOD_SERV_MCVD_SENSOR_ACQUISITION/Source',
+                '#/../../../MOD_SERV_CAPA_SENSOR/MOD_SERV_SENSOR_ALGO/Source',
+                '#/../../../MOD_SERV_CAPA_SENSOR/MOD_SERV_SENSOR_ACQUISITION/Source',
+                '#/../../../MOD_SERV_CAPA_SENSOR/MOD_SERV_SENSOR_RAIN_ALGO/Source',
+            #    '#/../../../MOD_SERV_CAPA_SENSOR/MOD_SERV_SENSOR/Source',
+                '#/../../../MOD_SERV_CAPA_SENSOR/MOD_SERV_SENSOR_DIAGNOSE/Source',
+                '#/../../../MOD_SERV_CAPA_SENSOR/MOD_SERV_SENSOR_SEQ/Source',
+                '#/../../../MOD_SERV_VA_LED/Source',
+                '#/../../../MOD_APPL_BATTERY_SUPERVISOR/Source',
+                '#/../../../MOD_APPL_ECUM_CALLOUT/Source',
+                '#/../../../MOD_CDD_WDG/Source',
+                '#/../../../MOD_SERV_WDGIF/Source',					
+                '#/../../../MOD_APPL_DCM_CALLOUT/Source',
+                '#/../../../MOD_APPL_OS_TASK/Source',
+				'#/../../../MOD_APPL_DEM_DTC/Source',
+                '#/../../../MOD_SERV_EMERGENCY_ACCESS/Source',
+                '#/../../../MOD_SERV_NVM_MNG/Source',
+                '#/../../../MOD_APPL_CAN/Source',
+                '#/../../../MOD_APPL_CUSTOM_ISO_TP/Source',
+                '#/../../../MOD_APPL_PLAY_PROT/Source',
+                '#/../../../MOD_MCAL_OC/Source',
+                '#/../../../MOD_SERV_OC_DATA_SIGNAL_MNG/Source',
+                '#/../../../MOD_MCAL_SPI/Source',
+                '#/../../../MOD_SERV_CAN_DIAG_USR/Source',
+                '#/../../../MOD_SERV_TIME_SERVICE/Source',
+                 # etc    
+                ])
+
+#==============================================================================#
+# 2. Setup compiler and Linker for Target application
+#==============================================================================#    
+env_application = env_base.Clone(tools=['icc_ARM_V8_1'], toolpath=".")
+
+if env_base['BUILD_TYPE'] == 'debug': print "Building with Debug compiler settings . . ."
+elif env_base['BUILD_TYPE'] == 'release': print "Building with Release compiler settings . . ."
+elif env_base['BUILD_TYPE'] == 'preprocess': print "Building with Preprocess compiler settings . . ."
+
+
+#================ Target Assembler Configuration =================
+
+#   --- assembler flags meaning ---
+# insert assembler specific flags; see assembler manual
+env_application.Append(ASFLAGS='-s+')
+env_application.Append(ASFLAGS='-M"<>"')
+env_application.Append(ASFLAGS=['-w+','-r'])
+env_application.Append(ASFLAGS='--cpu Cortex-M4')
+env_application.Append(ASFLAGS='--fpu None')
+env_application.Append(ASFLAGS='-DSTART_FROM_FLASH')
+
+
+#================ Target Compiler Configuration ================= 
+
+env_application.Append(CPPPATH=['$APPL_INCLUDES'])
+
+#   --- compiler flags meaning ---
+# --cpu=Cortex-M0+    : use this option to select the architecture or processor variant for which the code is to be generated
+# -Ol                 : sets the optimization level; O=optimization, l=low, m=medium, h=high
+# -e                  : enables language extenstions
+# -D <symbol>         : defines preprocessor symbols; D=define, <symbol>=symbol
+# -l[C]{filename|dir} : creates a list file; l=list, C=C list file with assembler source as comments, +buildDir=directory
+# --no_cse            : use this option to disable common subexpression elimination; this option has no effect at optimization levels below Medium
+# --no_unroll         : use this option to disable loop unrolling; this option has no effect at optimization levels below High
+# --no_inline         : use this option to disable function inlining
+# --no_code_motion    : use this option to disable code motion optimizations; this option has no effect at optimization levels below Medium
+# --no_tbaa           : use this option to disable type-based alias analysis; this option has no effect at optimization levels below High
+# --no_clustering     : use this option to disable static clustering optimizations; this option has no effect at optimization levels below Medium
+# --no_scheduling     : use this option to disable the instruction scheduler; this option has no effect at optimization levels below High.
+# --debug             : makes the compiler include information in the object modules required by the IAR C-SPY Debugger and other symbolic debuggers; including debug information will make the object files larger than otherwise
+# --endian=little     : specifies little-endian as the default byte order
+# --fpu=None          : no Floating Point Unit (generates code that performs floating-point operations using a FPU)
+# --preprocess=c      : generates preprocessed output to a named file; c=include comments
+
+if env_base['BUILD_TYPE'] != 'preprocess':
+   env_application.Append(CCFLAGS=['-DDISABLE_MCAL_INTERMODULE_ASR_CHECK','-D__ICCARM__','-DAUTOSAR_OS_NOT_USED', '-DS32K144', '--cpu_mode=thumb'])
+   env_application.Append(CCFLAGS=['--header_context'])
+   env_application.Append(CCFLAGS=['--silent'])
+   env_application.Append(CCFLAGS=['-Om'])
+   # if env_base['BUILD_TYPE'] == 'release':
+      # optimization compiler flag used for better runtime
+      # env_application.Append(CCFLAGS=['-Oh'])
+
+if env_base['BUILD_TYPE'] == 'debug':
+   env_application.Append(CCFLAGS=['--debug'])
+elif env_base['BUILD_TYPE'] == 'preprocess':
+    env_application.Append(CCFLAGS='--preprocess=c '+buildDir)
+else: True
+
+#================ Setup linker and map file =====================
+
+#   --- linker flags meaning ---
+# --map   : produces a map file
+# --entry : treats the symbol as a root symbol and as the start of the app
+# -f      : makes linker read command line options from the named file (default filename extention=xcl)
+if env_base['BUILD_TYPE'] != 'preprocess':
+    env_application.Append(LINKFLAGS='--define_symbol __CRC32_PARAM_START=0x0001FF00 --define_symbol __CRC32_PARAM_END=0x0001FF33')
+    env_application.Append(LINKFLAGS='--define_symbol __CRC32_PARAM__=0x1FFF8')
+    env_application.Append(LINKFLAGS='--define_symbol __CRC32_APP_START=0x00008800 --define_symbol __CRC32_APP_END=0x0001FEFB')
+    env_application.Append(LINKFLAGS='--define_symbol __CRC32_APP__=0x0001FEFC')
+    env_application.Append(LINKFLAGS='--define_symbol __START_ADDR=0x00008800 --define_symbol __END_ADDR=0x1FFFF')
+    env_application.Append(LINKFLAGS='-f ../../ProjectSettings/linklist.xcl')
+    env_application.Append(LINKFLAGS='--no_out_extension')
+    env_application.Append(LINKFLAGS='--keep PDL')
+    env_application.Append(LINKFLAGS='--map ../../BuildOutput/IAR_ARM.map')
+    env_application['LINKER_FILE'] = '--config ../../ProjectSettings/autosar_flash_144.icf'
+#    env_application.Append(LINKFLAGS=['--semihosting'])
+    env_application.Append(LINKFLAGS='--entry Reset_Handler')
+    env_application.Append(LINKFLAGS='--vfe')
+    env_application.Append(LINKFLAGS='--text_out locale')
+    env_application['OBJSUFFIX'] ='.o'
+    env_application['PROGSUFFIX']='.out'
+
+Export('env_application')
+
+#==============================================================================#
+# 3. Setup test environment. -- Not applicable here --
+#==============================================================================#
+
+
+
+#==============================================================================#
+# 4. Loading Subscripts
+#==============================================================================#
+
+application_objects = []
+
+#From here, try to keep PVCS structure for the list
+#Include_Sconscripts#
+
+application_objects += SConscript(buildDir + '/MOD_SERV_PROG_FRAME/Build/SCons/SConscript')
+application_objects += SConscript(buildDir + '/AUTOSAR_BSW/Build/SCons/SConscript')
+application_objects += SConscript(buildDir + '/MOD_CONFIG/Sirius/GenFiles/Build/Scons/Sconscript')
+application_objects += SConscript(buildDir + '/MOD_SERV_FBLBMHDR/Build/SCons/SConscript')
+application_objects += SConscript(buildDir + '/MOD_SERV_OS/Build/SCons/SConscript')
+application_objects += SConscript(buildDir + '/MOD_MCAL_OS/Build/Scons/Sconscript')
+application_objects += SConscript(buildDir + '/MOD_SERV_ECU_MNG/Build/Scons/Sconscript')
+application_objects += SConscript(buildDir + '/STUBS/MOD_TEMP_STUBS/Build/SCons/SConscript')
+
+application_objects += SConscript(buildDir + '/MOD_SERV_BATTERY_MONITORING/Build/Scons/Sconscript')
+application_objects += SConscript(buildDir + '/MOD_SERV_MEASURE_SUPPLY/Build/Scons/Sconscript')
+
+application_objects += SConscript(buildDir + '/MOD_ECUAL_LDC_3114/Build/Scons/Sconscript')
+application_objects += SConscript(buildDir + '/MOD_SERV_INDUCTIVE_SENSOR_ALGO/Build/Scons/Sconscript')
+
+application_objects += SConscript(buildDir + '/MOD_SERV_CAPA_SENSOR/MOD_SERV_SENSOR_ACQUISITION/Build/SCons/SConscript')
+application_objects += SConscript(buildDir + '/MOD_SERV_CAPA_SENSOR/MOD_SERV_MCVD_SENSOR/Build/SCons/SConscript')
+application_objects += SConscript(buildDir + '/MOD_SERV_CAPA_SENSOR/MOD_SERV_MCVD_SENSOR_ACQUISITION/Build/SCons/SConscript')
+application_objects += SConscript(buildDir + '/MOD_SERV_CAPA_SENSOR/MOD_SERV_SENSOR_ALGO/Build/SCons/SConscript')
+application_objects += SConscript(buildDir + '/MOD_SERV_CAPA_SENSOR/MOD_SERV_SENSOR_DIAGNOSE/Build/SCons/SConscript')
+application_objects += SConscript(buildDir + '/MOD_SERV_CAPA_SENSOR/MOD_SERV_SENSOR_SEQ/Build/SCons/SConscript')
+application_objects += SConscript(buildDir + '/MOD_SERV_CAPA_SENSOR/MOD_SERV_SENSOR_RAIN_ALGO/Build/SCons/SConscript')
+application_objects += SConscript(buildDir + '/MOD_SERV_VA_LED/Build/SCons/SConscript')
+application_objects += SConscript(buildDir + '/MOD_CDD_WDG/Build/Scons/SConscript')
+application_objects += SConscript(buildDir + '/MOD_SERV_WDGIF/Build/Scons/SConscript')
+application_objects += SConscript(buildDir + '/MOD_APPL_BATTERY_SUPERVISOR/Build/Scons/Sconscript')
+application_objects += SConscript(buildDir + '/MOD_APPL_ECUM_CALLOUT/Build/Scons/Sconscript')
+application_objects += SConscript(buildDir + '/MOD_APPL_DCM_CALLOUT/Build/Scons/Sconscript')
+application_objects += SConscript(buildDir + '/MOD_APPL_OS_TASK/Build/Scons/Sconscript')
+application_objects += SConscript(buildDir + '/MOD_APPL_DEM_DTC/Build/Scons/Sconscript')
+application_objects += SConscript(buildDir + '/MOD_SERV_EMERGENCY_ACCESS/Build/Scons/Sconscript')
+application_objects += SConscript(buildDir + '/MOD_SERV_PDL/Build/Scons/Sconscript')
+application_objects += SConscript(buildDir + '/MOD_SERV_NVM_MNG/Build/SCons/SConscript')
+application_objects += SConscript(buildDir + '/MOD_APPL_CAN/Build/SCons/SConscript')
+application_objects += SConscript(buildDir + '/MOD_APPL_CUSTOM_ISO_TP/Build/SCons/SConscript')
+application_objects += SConscript(buildDir + '/MOD_MCAL_OC/Build/SCons/SConscript')
+application_objects += SConscript(buildDir + '/MOD_MCAL_SPI/Build/SCons/SConscript')
+application_objects += SConscript(buildDir + '/MOD_SERV_OC_DATA_SIGNAL_MNG/Build/SCons/SConscript')
+application_objects += SConscript(buildDir + '/MOD_SERV_CAN_DIAG_USR/Build/SCons/SConscript')
+application_objects += SConscript(buildDir + '/MOD_APPL_PLAY_PROT/Build/SCons/SConscript')
+application_objects += SConscript(buildDir + '/MOD_SERV_TIME_SERVICE/Build/SCons/SConscript')
+
+if env_base['BUILD_TYPE'] != 'preprocess':
+    #==============================================================================#
+    # 5. Target build Output
+    #==============================================================================#
+    application = env_application.Program(buildDir + '/S32K' + env_application['PROGSUFFIX'], application_objects)    
+    env_application.Default(application)    
+    
+    open(buildDir + "/env_target.txt", "w").write(env_application.Dump())
+    
+    
+    #==============================================================================#
+    # 6. Pre Build and Post Build Actions
+    #==============================================================================#
+    def print_build_failures():
+        from SCons.Script import GetBuildFailures
+        if len(GetBuildFailures()) != 0:
+            print "=================================="
+            print "SUMMARY OF BUILD ERRORS:"
+            num = 1
+            for bf in GetBuildFailures():
+                print "SCons ERROR nr. %d: %s failed: %s" % (num, bf.node, bf.errstr)
+                num += 1
+    atexit.register(print_build_failures)
+
+    def PostBuild():
+        print "\n========================Processing Output======================================"    
+        try:
+            print "Post build Actions : \n "
+            PostBuildActions.main(env_base['POST_BUILD_ACTION'],env_base['BUILD_TYPE'])
+        except:
+            print "No PostBuildActions are configured or are not in the expected format"    
+    atexit.register(PostBuild)    

@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<OsMcal>
+  <OsMcalGeneral OsControllerFamily="S32K" OsDisableInterrupts="__asm(&quot; cpsid i&quot;)" OsEnableInterrupts="__asm(&quot; cpsie i&quot;)" OsIncludeHeaderFile="StdRegMacros.h">
+    <OsTick OsTickTimeUs="2500" OsSelectTimerInterface="OS_TIMER_SYSTICK_S32K" OsClockSourceFreqCalc="User input" OsFreqUserInput="80" OsTickClockSource="" OsGptTimer="" OsIsrUsedInSleepMode="false" OsSleepModeInterface="" />
+  </OsMcalGeneral>
+</OsMcal>

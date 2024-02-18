@@ -1,0 +1,180 @@
+/*------------------------------------------------------------------------------------------------+
+| File: LDC3114.hi                                                                             |
++-------------------------------------------------------------------------------------------------+
+| Project: Audi eTab                                                                              |
++-------------------------------------------------------------------------------------------------+
+| Short description:    Header file for exported data types, macros and description of prototypes |
+| of the interface functions                                                                      |                                                                                                 |
+|                                                                                                 |
+|                                                                                                 |
+|                                                                                                 |
++-------------------------------------------------------------------------------------------------+
+| for Information, to do:                                                                         |
+|                                                                                                 |
+|                                                                                                 |
++-------------------------------------------------------------------------------------------------+
+| $Revision::                                                                                  $: |
+| $Date::                                                                                      $: |
+| $Author::                                                                                    $: |
+| $URL::                                                                                       $: |
+|                                                                                                 |
++------------------------------------------------------------------------------------------------*/
+#ifndef LDC3114_HI
+#define LDC3114_HI
+
+#define LDC3114_HUF_MONITOR_DIAG_DATA_LENGTH 8u
+#define LDC_INTERRUPT_WAIT (U8)0u
+#define LDC_INTERRUPT_OCCURRED (U8)1u
+#define LDC_INTERRUPT_FIRST_TIME (U8)2u
+
+/* -------------------------------------------- Module API -------------------------------------------- */
+typedef enum
+{
+   	LDC3114_E_COMMAND_ACCEPTED,
+   	LDC3114_E_COMMAND_NOT_ACCEPTED
+} LDC3114_Enum_CommandStatusType;
+
+typedef enum
+{
+   	LDC3114_E_LOW_POWER,
+   	LDC3114_E_NORMAL_POWER
+} LDC3114_Enum_LdcPowerModesType;
+
+typedef struct
+{
+    U8 U8_SyncTimeout_NORMAL;
+    U8 U8_SyncTimeout_ACTIVE;
+} LDC3114_Sync_T;
+
+typedef struct
+{
+    U8 U8_SyncTimeout_NORMAL_DDF;
+    U8 U8_SyncTimeout_ACTIVE_DDF;
+/* polyspace < MISRA-C3:2.3 : Not a defect : Justify with annotations > Should be kept for future usage */
+} LDC3114_Sync_DDF_T;
+
+/* polyspace+6 MISRA-C3:8.6 [Justified:Low] "External declaration is needed" */
+extern U8 U8_Positives_Values;
+extern U8 bLdcIsrTriggered;
+extern LDC3114_Sync_T LDC3114_SyncTimeout;
+extern volatile U32 U32_LDC_Remaining_Time;
+extern U8 LDC3114_getStatusByte(void);
+
+/*********************************************************************************************************
+ *  Name                   : LDC3114_Init
+ *  Description            : This function initializes LDC3114 module after reset
+ *                         :
+ *  Parameters             : void
+ *  Return                 : void
+ *  Critical/explanation   : -
+ *   Author                : mficea
+ *********************************************************************************************************/
+extern void LDC3114_Init(void);
+
+/*********************************************************************************************************
+ *  Name                   : LDC3114_CyclicTask
+ *  Description            : LDC3114 Periodic Task
+ *                         :
+ *  Parameters             : void
+ *  Return                 : void
+ *  Critical/explanation   : -
+ *   Author                : mficea
+ *********************************************************************************************************/
+/* polyspace < MISRA-C3:8.5 : Not a defect : Justify with annotations > LDC3114_CyclicTask is declared once in LDC3114.hi file */
+extern void LDC3114_CyclicTask(void);
+
+/*********************************************************************************************************
+ *  Name                   : LDC3114_SetLdcPowerMode
+ *  Description            : Function for setting LDC 3114 power mode
+ *                         :
+ *  Parameters             : LDC3114_Enum_LdcPowerModesType EN_PowerMode - requested power mode
+ *  Return                 : LDC3114_Enum_CommandStatusType - command status
+ *  Critical/explanation   : -
+ *   Author                : mficea
+ *********************************************************************************************************/
+extern LDC3114_Enum_CommandStatusType LDC3114_SetLdcPowerMode(LDC3114_Enum_LdcPowerModesType EN_PowerMode);
+
+/*********************************************************************************************************
+ *  Name                   : LDC3114_GetDiagData
+ *  Description            : Function for getting LDC 3114 huf monitor data
+ *                         :
+ *  Parameters             : pu8Buffer - pointer to save data buffer
+ *  Return                 : none
+ *  Critical/explanation   : -
+ *   Author                : atofan
+ *********************************************************************************************************/
+/* polyspace <MISRA-C3:D4.5 : Not a defect: Justify with annotations > no overlapping visibility */
+extern void LDC3114_GetDiagData(U8 *pu8Buffer);
+
+/*********************************************************************************************************
+ *  Name                   : LDC3114_GetSensorsData
+ *  Description            : Function for getting LDC 3114 measured values
+ *                         :
+ *  Parameters             : none
+ *  Return                 : none
+ *  Critical/explanation   : -
+ *   Author                : hcostin
+ *********************************************************************************************************/
+extern void LDC3114_GetSensorsData(void);
+
+/*********************************************************************************************************
+ *  Name                   : LDC3114_DisableChannels
+ *  Description            : Disable LDC3114 Channels
+ *                         :
+ *  Parameters             : none
+ *  Return                 : none
+ *  Critical/explanation   : -
+ *   Author                : atofan
+ *********************************************************************************************************/
+extern BOOL LDC3114_DisableChannels(void);
+
+/*********************************************************************************************************
+ *  Name                   : LDC3114_EnableChannels
+ *  Description            : Enable LDC3114 Channels
+ *                         :
+ *  Parameters             : none
+ *  Return                 : none
+ *  Critical/explanation   : -
+ *   Author                : atofan
+ *********************************************************************************************************/
+extern BOOL LDC3114_EnableChannels(void);
+
+/*********************************************************************************************************
+ *  Name                   : LDC3114_ISR
+ *  Description            : Interrupt Service Routine for LDC - INTB pin
+ *                         :
+ *  Parameters             : none
+ *  Return                 : none
+ *  Critical/explanation   : -
+ *   Author                : atofan
+ *********************************************************************************************************/
+extern void LDC3114_ISR(void);
+
+/*********************************************************************************************************
+ *  Name                   : vHandleLDCChStates
+ *  Description            : Enable or disable LDC channels
+ *                         :
+ *  Parameters             : none
+ *  Return                 : none
+ *  Critical/explanation   : -
+ *   Author                :
+ *********************************************************************************************************/
+void vHandleLDCChStates(void);
+
+/*********************************************************************************************************
+ *  Name                   : LDC3114_syncErrorHandleLDC
+ *  Description            : clear interrupt pin in case of error
+ *                         :
+ *  Parameters             : mode - LDC running mode
+ *  Return                 : none
+ *  Critical/explanation   : -
+ *   Author                : hcostin
+ *********************************************************************************************************/
+ /* polyspace+1 MISRA-C3:D4.5 [Justified:Low] "No overlapping visibility" */
+extern void LDC3114_syncErrorHandleLDC(LDC3114_Enum_LdcPowerModesType mode);
+
+#endif   /* LDC3114_HI */
+
+/* Automatic logging by PVCS ***********************************************
+$Log:
+*********************************************************** end of comment */

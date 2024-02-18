@@ -1,0 +1,524 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--Created with Liquid Studio 2017 - XML Editor Edition 15.1.16.7872 (https://www.liquid-technologies.com)-->
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="EcuM">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="EcuMFixedGeneral" minOccurs="1" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:attribute name="EcuMDevErrorDetect" type="xs:boolean" use="required">
+                            <xs:annotation>
+                                <xs:documentation>The parameter give access to identify possible errors that can appear during integration of the module with the other modules, DET errors are send too in case a problem appears. After development phase, the macro can be set to FALSE. </xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="EcuMIncludeDet" fixed="false" type="xs:boolean">
+                            <xs:annotation>
+                                <xs:documentation>If defined, the according BSW module will be initialized by the ECU State Manager</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="EcuMMainFunctionPeriod" type="xs:int" use="required">
+                            <xs:annotation>
+                                <xs:documentation>This parameter defines the schedule period of EcuM_MainFunction in milliseconds.</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="EcuMVersionInfoApi" type="xs:boolean" use="required">
+                            <xs:annotation>
+                                <xs:documentation>Switches the version info API on or off</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="EcuMIncludeComM" type="xs:boolean" use="required">
+                            <xs:annotation>
+                                <xs:documentation>This configuration parameter defines whether the communication manager is supported by EcuM.</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="EcuMTTIIEnabled" fixed="false" type="xs:boolean">
+                            <xs:annotation>
+                                <xs:documentation>Boolean switch to enable / disable TTII</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="EcuMTTIIWakeupSource" fixed="ECUM_WKSOURCE_NONE">
+                            <xs:simpleType>
+                                <xs:restriction base="xs:string">
+                                    <xs:enumeration value="ECUM_WKSOURCE_NONE" />
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:attribute>
+                        <xs:attribute name="EcuMRunMinimumDuration" use="required">
+                            <xs:annotation>
+                                <xs:documentation>Duration given in milliseconds for which the ECU State Manager will stay in RUN state when no one requests RUN. This duration should be at least as long as a SW-Cs needs to request RUN.</xs:documentation>
+                            </xs:annotation>
+                            <xs:simpleType>
+                                <xs:restriction base="xs:int">
+                                    <xs:minInclusive value="10" />
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:attribute>
+                        
+                        <xs:attribute name="EcuMCalloutDriverInitZero" type="xs:boolean" use="required">
+                            <xs:annotation>
+                                <xs:documentation>This configuration parameter defines whether function EcuM_AL_DriverInitZero is available and called by EcuM at startup</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="EcuMCalloutDriverInitOne" type="xs:boolean" use="required">
+                            <xs:annotation>
+                                <xs:documentation>This configuration parameter defines whether function EcuM_AL_DriverInitOne is available and called by EcuM at startup</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="EcuMCalloutDriverInitTwo" type="xs:boolean" use="required">
+                            <xs:annotation>
+                                <xs:documentation>This configuration parameter defines whether function EcuM_AL_DriverInitTwo is available and called by EcuM at startup</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="EcuMCalloutDriverInitThree" type="xs:boolean" use="required">
+                            <xs:annotation>
+                                <xs:documentation>This configuration parameter defines whether function EcuM_AL_DriverInitThree is available and called by EcuM at startup</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="EcuMCalloutOnModeChange" type="xs:boolean" use="required">
+                            <xs:annotation>
+                                <xs:documentation>This configuration parameter defines whether function EcuM_OnModeChange is available and called each time EcuM current mode is changed.</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="EcuMEnableResetReasonDetection" default="true" type="xs:boolean">
+                            <xs:annotation>
+                                <xs:documentation>This configuration parameter defines whether the handle for detecting the reset reason into startup phase is supported.
+This box must be checked if the project contains wake up sources with integrated power control.</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="EcuM_IncludeHeader" default="Mcu.h" type="xs:string">
+                            <xs:annotation>
+                                <xs:documentation>Please provide the name of the file(including extension)
+where the reset reasons and sleep modes are defined. </xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="ECUM_DISABLE_ALL_INTERRUPTS" default="SuspendAllInterrupts()" type="xs:string">
+                            <xs:annotation>
+                                <xs:documentation>Please provide the value of the ECUM_DISABLE_ALL_INTERRUPTS() macro. 
+The expected value should be the name of the defined function and parameters(if needed).
+                              </xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="ECUM_ENABLE_ALL_INTERRUPTS" default="ResumeAllInterrupts()" type="xs:string">
+                            <xs:annotation>
+                                <xs:documentation>Please provide the value of the ECUM_ENABLE_ALL_INTERRUPTS() macro. 
+The expected value should be the name of the defined function and parameters(if needed).</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+						<xs:attribute name="EcuMIncludeNvramWriteall" type="xs:boolean" use="required">
+                            <xs:annotation>
+                                <xs:documentation>This configuration parameter defines whether NvM WriteAll is performed by EcuM before shutdown or sleep</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+						<xs:attribute name="EcuMNvramWriteallTimeout" use="optional" default="10000">
+                            <xs:annotation>
+                                <xs:documentation>Period given in milliseconds for which the ECU State Manager will wait until it considers a WriteAll job of the NVRAM Manager as failed.
+This parameter must be a multiple of EcuMMainFunctionPeriod
+Value range: ([1, 65535] * EcuMMainFunctionPeriod) </xs:documentation>
+                            </xs:annotation>
+                            <xs:simpleType>
+							
+                                <xs:restriction base="xs:int">
+                                    <xs:minInclusive value="1" />
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:attribute>
+                        <xs:attribute name="ECUM_START_OS" default="StartOS(OSDEFAULTAPPMODE)" type="xs:string">
+                            <xs:annotation>
+                                <xs:documentation>Please provide the value of the ECUM_START_OS() macro. 
+The expected value should be the name of the defined function and parameters(if needed). 
+This macro is called into EcuMInit() function before EcuM_AL_DriverInitTwo() is called.                                
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="ECUM_SHUTDOWN_OS" default="ShutdownOS(0)" type="xs:string">
+                            <xs:annotation>
+                                <xs:documentation>Please provide the value of the ECUM_SHUTDOWN_OS() macro. 
+The expected value should be the name of the defined function and parameters(if needed).
+This macro is called at the end of EcuM_Internal_Go_Off_One() function while EcuM is in ECUM_STATE_GO_OFF_ONE state.</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="ECUM_LOCK_SCHEDULER" default="GetResource(RES_SCHEDULER)" type="xs:string">
+                            <xs:annotation>
+                                <xs:documentation>Please provide the value of the ECUM_LOCK_SCHEDULER() macro. 
+The expected value should be the name of the defined function and parameters(if needed).
+This macro is called into the EcuM_Internal_Go_Sleep() function before the EcuM_NextState is set to ECUM_STATE_SLEEP.
+After this macro is called, no OS tasks should run.</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="ECUM_UNLOCK_SCHEDULER" default="ReleaseResource(RES_SCHEDULER)" type="xs:string">
+                            <xs:annotation>
+                                <xs:documentation>Please provide the value of the ECUM_UNLOCK_SCHEDULER() macro. 
+The expected value should be the name of the defined function and parameters(if needed).
+This macro is called into the cuM_Internal_Wakeup_One() function before the EcuM_NextState is set to ECUM_STATE_WAKEUP_VALIDATION.
+After this macro is called, the OS task may run again.</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="EcuM_IncludeDefineHeader" default="Os.h" type="xs:string">
+                            <xs:annotation>
+                                <xs:documentation>Please provide the header of the file(including extension) in which the above functions are defined.</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="EcuMConfiguration" minOccurs="1" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="EcuMFixedConfiguration" minOccurs="1" maxOccurs="1">
+                                <xs:complexType>
+                                    <xs:sequence>
+									    <xs:element name="EcuMComMCommunicationAllowedList" minOccurs="0" maxOccurs="1">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="ComMChannels" minOccurs="0" maxOccurs="255">
+                                                        <xs:complexType>
+                                                            <xs:attribute name="ComMChannelRef" use="required">
+                                                                <xs:annotation>
+                                                                    <xs:documentation>This parameter contain references to the ComMChannel for which EcuM has to call ComM_CommunicationAllowed.</xs:documentation>
+                                                                </xs:annotation>
+                                                                <xs:simpleType>
+                                                                    <xs:restriction base="xs:string" />
+                                                                </xs:simpleType>
+                                                            </xs:attribute>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="EcuMUserConfig" minOccurs="0" maxOccurs="1">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="EcuMFixedUser" minOccurs="0" maxOccurs="255">
+                                                        <xs:complexType>
+                                                            <xs:attribute name="UserName" use="required">
+                                                                <xs:annotation>
+                                                                    <xs:documentation>This parameter defines the identifier of the EcuM user.</xs:documentation>
+                                                                </xs:annotation>
+                                                                <xs:simpleType>
+                                                                    <xs:restriction base="xs:string" />
+                                                                </xs:simpleType>
+                                                            </xs:attribute>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="EcuMModuleToBeInitialized" minOccurs="0" maxOccurs="255">
+                                            <xs:annotation>
+                                                <xs:documentation>This element shall be used in case the chosen module is integrated and delivered by BSW team.  
+</xs:documentation>
+                                            </xs:annotation>
+                                            <xs:complexType>
+                                                <xs:attribute name="ModuleName" use="required">
+                                                    <xs:annotation>
+                                                        <xs:documentation>The specific module that can be supported by EcuM and that have to be initialized through EcuM.
+
+This element shall be used in case the chosen module is integrated and delivered by BSW team.  </xs:documentation>
+                                                    </xs:annotation>
+                                                    <xs:simpleType>
+                                                        <xs:restriction base="xs:string">
+                                                            <xs:enumeration value="MOD_ECUAL_FEE" />
+                                                            <xs:enumeration value="MOD_MCAL_ADC" />
+                                                            <xs:enumeration value="MOD_MCAL_GPT" />
+                                                            <xs:enumeration value="MOD_MCAL_MCU" />
+                                                            <xs:enumeration value="MOD_MCAL_PORT" />
+                                                            <xs:enumeration value="MOD_MCAL_PWM" />
+                                                            <xs:enumeration value="MOD_MCAL_SPI" />
+                                                            <xs:enumeration value="MOD_MCAL_WDG" />
+                                                            <xs:enumeration value="MOD_SERV_NVM_MNG" />
+                                                            <xs:enumeration value="MOD_SERV_WDG_MNG" />
+                                                        </xs:restriction>
+                                                    </xs:simpleType>
+                                                </xs:attribute>
+                                            </xs:complexType>
+                                            <xs:unique name="ModuleNameUniqKey">
+                                                <xs:selector xpath="EcuM/EcuMFixedConfiguration/EcuMModuleToBeInitialized" />
+                                                <xs:field xpath="@ModuleName" />
+                                            </xs:unique>
+                                        </xs:element>
+                                        <xs:element name="EcuMWakeupSources" minOccurs="1" maxOccurs="1">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="ECUM_WKSOURCE_POWER" minOccurs="1" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:sequence>
+                                                                <xs:element name="EcuMResetReasonRef" minOccurs="0" maxOccurs="255">
+                                                                    <xs:complexType>
+                                                                        <xs:attribute name="EcuMResetReasonRef" type="xs:string">
+                                                                            <xs:annotation>
+                                                                                <xs:documentation>This parameter describes the reset reasons detected by the MCU driver for the wakeup source.</xs:documentation>
+                                                                            </xs:annotation>
+                                                                        </xs:attribute>
+                                                                    </xs:complexType>
+                                                                </xs:element>
+                                                            </xs:sequence>
+                                                            <xs:attribute name="EcuMWakeupSourceId" fixed="ECUM_WKSOURCE_POWER" type="xs:string" use="required">
+                                                                <xs:annotation>
+                                                                    <xs:documentation>This parameter defines the identifier of this wakeup source.</xs:documentation>
+                                                                </xs:annotation>
+                                                            </xs:attribute>
+                                                            <xs:attribute name="EcuMValidationTimeout" fixed="0" use="required">
+                                                                <xs:annotation>
+                                                                    <xs:documentation>The validation timeout (period for which the ECU State Manager will wait for the validation of a wakeup event) can be defined for each wakeup source independently. The timeout is specified in milliseconds.
+When the timeout is not instantiated, there is no validation routine and the ECU Manager shall not validate the wakeup source.</xs:documentation>
+                                                                </xs:annotation>
+                                                                <xs:simpleType>
+                                                                    <xs:restriction base="xs:int" />
+                                                                </xs:simpleType>
+                                                            </xs:attribute>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="ECUM_WKSOURCE_RESET" minOccurs="1" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:sequence>
+                                                                <xs:element name="EcuMResetReasonRef" minOccurs="0" maxOccurs="255">
+                                                                    <xs:complexType>
+                                                                        <xs:attribute name="EcuMResetReasonRef" type="xs:string">
+                                                                            <xs:annotation>
+                                                                                <xs:documentation>This parameter describes the reset reasons detected by the MCU driver for the wakeup source.</xs:documentation>
+                                                                            </xs:annotation>
+                                                                        </xs:attribute>
+                                                                    </xs:complexType>
+                                                                </xs:element>
+                                                            </xs:sequence>
+                                                            <xs:attribute name="EcuMWakeupSourceId" fixed="ECUM_WKSOURCE_RESET" type="xs:string" use="required">
+                                                                <xs:annotation>
+                                                                    <xs:documentation>This parameter defines the identifier of this wakeup source.</xs:documentation>
+                                                                </xs:annotation>
+                                                            </xs:attribute>
+                                                            <xs:attribute name="EcuMValidationTimeout" fixed="0" use="required">
+                                                                <xs:annotation>
+                                                                    <xs:documentation>The validation timeout (period for which the ECU State Manager will wait for the validation of a wakeup event) can be defined for each wakeup source independently. The timeout is specified in milliseconds.
+When the timeout is not instantiated, there is no validation routine and the ECU Manager shall not validate the wakeup source.</xs:documentation>
+                                                                </xs:annotation>
+                                                                <xs:simpleType>
+                                                                    <xs:restriction base="xs:int" />
+                                                                </xs:simpleType>
+                                                            </xs:attribute>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="ECUM_WKSOURCE_INTERNAL_RESET" minOccurs="1" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:sequence>
+                                                                <xs:element name="EcuMResetReasonRef" minOccurs="0" maxOccurs="255">
+                                                                    <xs:complexType>
+                                                                        <xs:attribute name="EcuMResetReasonRef" type="xs:string">
+                                                                            <xs:annotation>
+                                                                                <xs:documentation>This parameter describes the reset reasons detected by the MCU driver for the wakeup source.</xs:documentation>
+                                                                            </xs:annotation>
+                                                                        </xs:attribute>
+                                                                    </xs:complexType>
+                                                                </xs:element>
+                                                            </xs:sequence>
+                                                            <xs:attribute name="EcuMWakeupSourceId" fixed="ECUM_WKSOURCE_INTERNAL_RESET" type="xs:string" use="required">
+                                                                <xs:annotation>
+                                                                    <xs:documentation>This parameter defines the identifier of this wakeup source.</xs:documentation>
+                                                                </xs:annotation>
+                                                            </xs:attribute>
+                                                            <xs:attribute name="EcuMValidationTimeout" fixed="0" use="required">
+                                                                <xs:annotation>
+                                                                    <xs:documentation>The validation timeout (period for which the ECU State Manager will wait for the validation of a wakeup event) can be defined for each wakeup source independently. The timeout is specified in milliseconds.
+When the timeout is not instantiated, there is no validation routine and the ECU Manager shall not validate the wakeup source.</xs:documentation>
+                                                                </xs:annotation>
+                                                                <xs:simpleType>
+                                                                    <xs:restriction base="xs:int" />
+                                                                </xs:simpleType>
+                                                            </xs:attribute>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="ECUM_WKSOURCE_INTERNAL_WDG" minOccurs="1" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:sequence>
+                                                                <xs:element name="EcuMResetReasonRef" minOccurs="0" maxOccurs="255">
+                                                                    <xs:complexType>
+                                                                        <xs:attribute name="EcuMResetReasonRef" type="xs:string">
+                                                                            <xs:annotation>
+                                                                                <xs:documentation>This parameter describes the reset reasons detected by the MCU driver for the wakeup source.</xs:documentation>
+                                                                            </xs:annotation>
+                                                                        </xs:attribute>
+                                                                    </xs:complexType>
+                                                                </xs:element>
+                                                            </xs:sequence>
+                                                            <xs:attribute name="EcuMWakeupSourceId" fixed="ECUM_WKSOURCE_INTERNAL_WDG" type="xs:string" use="required">
+                                                                <xs:annotation>
+                                                                    <xs:documentation>This parameter defines the identifier of this wakeup source.</xs:documentation>
+                                                                </xs:annotation>
+                                                            </xs:attribute>
+                                                            <xs:attribute name="EcuMValidationTimeout" fixed="0" use="required">
+                                                                <xs:annotation>
+                                                                    <xs:documentation>The validation timeout (period for which the ECU State Manager will wait for the validation of a wakeup event) can be defined for each wakeup source independently. The timeout is specified in milliseconds.
+When the timeout is not instantiated, there is no validation routine and the ECU Manager shall not validate the wakeup source.</xs:documentation>
+                                                                </xs:annotation>
+                                                                <xs:simpleType>
+                                                                    <xs:restriction base="xs:int" />
+                                                                </xs:simpleType>
+                                                            </xs:attribute>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="ECUM_WKSOURCE_EXTERNAL_WDG" minOccurs="1" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:sequence>
+                                                                <xs:element name="EcuMResetReasonRef" minOccurs="0" maxOccurs="255">
+                                                                    <xs:complexType>
+                                                                        <xs:attribute name="EcuMResetReasonRef" type="xs:string">
+                                                                            <xs:annotation>
+                                                                                <xs:documentation>This parameter describes the reset reasons detected by the MCU driver for the wakeup source.</xs:documentation>
+                                                                            </xs:annotation>
+                                                                        </xs:attribute>
+                                                                    </xs:complexType>
+                                                                </xs:element>
+                                                            </xs:sequence>
+                                                            <xs:attribute name="EcuMWakeupSourceId" fixed="ECUM_WKSOURCE_EXTERNAL_WDG" type="xs:string" use="required">
+                                                                <xs:annotation>
+                                                                    <xs:documentation>This parameter defines the identifier of this wakeup source.</xs:documentation>
+                                                                </xs:annotation>
+                                                            </xs:attribute>
+                                                            <xs:attribute name="EcuMValidationTimeout" fixed="0" use="required">
+                                                                <xs:annotation>
+                                                                    <xs:documentation>The validation timeout (period for which the ECU State Manager will wait for the validation of a wakeup event) can be defined for each wakeup source independently. The timeout is specified in milliseconds.
+When the timeout is not instantiated, there is no validation routine and the ECU Manager shall not validate the wakeup source.</xs:documentation>
+                                                                </xs:annotation>
+                                                                <xs:simpleType>
+                                                                    <xs:restriction base="xs:int" />
+                                                                </xs:simpleType>
+                                                            </xs:attribute>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="EcuMWakeupSource" minOccurs="0" maxOccurs="255">
+                                                        <xs:complexType>
+                                                            <xs:sequence>
+                                                                <xs:element name="EcuMResetReasonRef" minOccurs="0" maxOccurs="255">
+                                                                    <xs:complexType>
+                                                                        <xs:attribute name="EcuMResetReasonRef" type="xs:string">
+                                                                            <xs:annotation>
+                                                                                <xs:documentation>This parameter describes the reset reasons detected by the MCU driver for the wakeup source.</xs:documentation>
+                                                                            </xs:annotation>
+                                                                        </xs:attribute>
+                                                                    </xs:complexType>
+                                                                </xs:element>
+                                                            </xs:sequence>
+                                                            <xs:attribute name="EcuMWakeupSourceId" type="xs:string" use="required">
+                                                                <xs:annotation>
+                                                                    <xs:documentation>This parameter defines the identifier of this wakeup source.</xs:documentation>
+                                                                </xs:annotation>
+                                                            </xs:attribute>
+                                                            <xs:attribute name="EcuMValidationTimeout" use="required">
+                                                                <xs:annotation>
+                                                                    <xs:documentation>The validation timeout (period for which the ECU State Manager will wait for the validation of a wakeup event) can be defined for each wakeup source independently. The timeout is specified in milliseconds.
+When the timeout is not instantiated, there is no validation routine and the ECU Manager shall not validate the wakeup source.</xs:documentation>
+                                                                </xs:annotation>
+                                                                <xs:simpleType>
+                                                                    <xs:restriction base="xs:int">
+                                                                        <xs:minInclusive value="0" />
+                                                                    </xs:restriction>
+                                                                </xs:simpleType>
+                                                            </xs:attribute>
+															<xs:attribute name="EcuComMChannelRef" type="xs:string" >
+                                                                <xs:annotation>
+                                                                    <xs:documentation>This parameter is a reference to a Network (channel) defined in the Communication Manager. No reference indicates that the wakeup source is not a communication channel.</xs:documentation>
+                                                                </xs:annotation>
+                                                            </xs:attribute>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="EcuMSleepModes" minOccurs="0" maxOccurs="1">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="EcuMSleepMode" type="EcuMSleepModeType" minOccurs="0" maxOccurs="255" />
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="EcuMDefaultShutdownTarget" minOccurs="1" maxOccurs="1">
+                                            <xs:complexType>
+                                                <xs:attribute name="EcuMDefaultState" use="required">
+                                                    <xs:annotation>
+                                                        <xs:documentation>This parameter describes the state part of the default shutdown target selected when the ECU comes out of reset. If EcuMStateSleep is selected, the parameter EcuMDefaultSleepModeRef selects the specific sleep mode.</xs:documentation>
+                                                    </xs:annotation>
+                                                    <xs:simpleType>
+                                                        <xs:restriction base="xs:string">
+                                                            <xs:enumeration value="ECUM_STATE_OFF" />
+                                                            <xs:enumeration value="ECUM_STATE_RESET" />
+                                                            <xs:enumeration value="ECUM_STATE_SLEEP" />
+                                                        </xs:restriction>
+                                                    </xs:simpleType>
+                                                </xs:attribute>
+                                                <xs:attribute name="EcuMDefaultSleepModeRef" type="xs:string">
+                                                    <xs:annotation>
+                                                        <xs:documentation>If EcuMDefaultShutdownTarget is EcuMStateSleep, this parameter selects the default sleep mode. Otherwise this parameter may be ignored</xs:documentation>
+                                                    </xs:annotation>
+                                                </xs:attribute>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                                <xs:key name="SleepModeIdKey">
+                                    <xs:selector xpath="EcuM/EcuMConfiguration/EcuMFixedConfiguration/EcuMSleepModes/EcuMSleepMode" />
+                                    <xs:field xpath="@EcuMSleepModeId" />
+                                </xs:key>
+                                <xs:keyref name="RefToSleepModeId" refer="SleepModeIdKey">
+                                    <xs:selector xpath="EcuM/EcuMConfiguration/EcuMFixedConfiguration/EcuMDefaultShutdownTarget" />
+                                    <xs:field xpath="@EcuMDefaultSleepModeRef" />
+                                </xs:keyref>
+                                <xs:key name="UserDependentWakeUpSrcKey">
+                                    <xs:selector xpath="EcuM/EcuMConfiguration/EcuMFixedConfiguration/EcuMWakeupSources/EcuMWakeupSource" />
+                                    <xs:field xpath="@EcuMWakeupSourceId" />
+                                </xs:key>
+                                <xs:keyref name="EcuMUserDependentWKRef" refer="UserDependentWakeUpSrcKey">
+                                    <xs:selector xpath="EcuM/EcuMConfiguration/EcuMFixedConfiguration/EcuMSleepModes/EcuMSleepMode/EcuM_UserDependent_WakeupSource" />
+                                    <xs:field xpath="@EcuMWakeupSourceMask" />
+                                </xs:keyref>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Scripts" minOccurs="1" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:attribute name="path" fixed="EcuMGenerationScript.cs" type="xs:string" use="required" />
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+        <xs:unique name="UserName">
+            <xs:selector xpath="EcuM/EcuMFixedConfiguration/EcuMUserConfig/EcuMFixedUser" />
+            <xs:field xpath="@UserName" />
+        </xs:unique>
+        <xs:unique name="EcuMWakeupSourceId">
+            <xs:selector xpath="EcuM/EcuMFixedConfiguration/EcuMWakeupSources/EcuMWakeupSource" />
+            <xs:field xpath="@EcuMWakeupSourceId" />
+        </xs:unique>
+    </xs:element>
+    <xs:complexType name="EcuMSleepModeType">
+        <xs:sequence>
+            <xs:element name="EcuM_UserDependent_WakeupSource" minOccurs="0" maxOccurs="255">
+                <xs:complexType>
+                    <xs:attribute name="EcuMWakeupSourceMask" type="xs:string">
+                        <xs:annotation>
+                            <xs:documentation>These parameters are references to the wakeup sources that shall be enabled for this sleep mode.</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="EcuMSleepModeId" type="xs:string" use="required">
+            <xs:annotation>
+                <xs:documentation>This ID identifies this sleep mode in services like EcuM_SelectShutdownTarget.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="EcuMSleepModeSuspend" type="xs:boolean" use="required">
+            <xs:annotation>
+                <xs:documentation>This configuration parameter shall be set true if CPU is suspended, halted, or powered off in the sleep mode and false if the CPU keeps running in this sleep mode</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="EcuMSleepModeMcuModeRef" type="xs:IDREF">
+            <xs:annotation>
+                <xs:documentation>This parameter is a reference to the corresponding MCU mode for this sleep mode.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="EcuMPredefinedWakeUp_POWER" default="false" type="xs:boolean" />
+        <xs:attribute name="EcuMPredefinedWakeUp_RESET" default="false" type="xs:boolean" />
+        <xs:attribute name="EcuMPredefinedWakeUp_INTERNAL_RESET" default="false" type="xs:boolean" />
+        <xs:attribute name="EcuMPredefinedWakeUp_INTERNAL_WDG" default="false" type="xs:boolean" />
+        <xs:attribute name="EcuMPredefinedWakeUp_EXTERNAL_WDG" default="false" type="xs:boolean" />
+    </xs:complexType>
+</xs:schema>

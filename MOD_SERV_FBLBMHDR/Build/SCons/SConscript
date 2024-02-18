@@ -1,0 +1,21 @@
+Import('env_application')
+
+objects = []
+
+#==============================================================================#
+# Application modules
+#==============================================================================#
+env_app = env_application.Clone()
+
+appl_sources = [
+'../../Source/applvect.c',
+'../../Source/FblBm_Lcfg.c',
+'../../Source/FblBmHdr_Lcfg.c',
+]
+
+objects += env_app.Object(appl_sources)
+
+#==============================================================================#
+# Return objects
+#==============================================================================#
+Return('objects')

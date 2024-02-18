@@ -1,0 +1,175 @@
+/*------------------------------------------------------------------------------------------------+
+| Modul: APPL_SENSOR.hi                                                                              |
++-------------------------------------------------------------------------------------------------+
+| Project: VW511CS                                                                                |
+|          Huf Huelsbeck und Fuerst                                                               |
+|          (Name des Programmierers), PDES                                                        |
++-------------------------------------------------------------------------------------------------+
+| Short description:                                                                              |
+| CAS Signal Handler, Handler for the CAS SCI IO-Signals and the logic combinations               |
+|                                                                                                 |
++-------------------------------------------------------------------------------------------------+
+| Changes:                                                                                        |
+| 10.09.13 - DBO first version                                                                    |
+|                                                                                                 |
++-------------------------------------------------------------------------------------------------+
+| for Information, to do:                                                                         |
+|                                                                                                 |
++-------------------------------------------------------------------------------------------------+
+| $Revision:   1.2  $                                                                             |
+|                                                                                                 |
++------------------------------------------------------------------------------------------------*/
+#ifndef  APPL_SENSOR_HI
+#define  APPL_SENSOR_HI       /* FileName_C */
+
+typedef enum
+{
+	EN_LOWPOWER_SENSOR_MODE = 0u,
+	EN_NORMAL_SENSOR_MODE,
+	EN_ACTIVE_SENSOR_MODE
+}EN_SENSOR_MODE;
+
+/*--------------------------------------------------------------------------
+Function: sequencer_ReportPlayProtActive
+Owner   :
+
+Input   : void
+Output  : void
+
+Local   : -
+Global  : -
+
+Description: 
+---------------------------------------------------------- end of comment */
+seq_export void sequencer_ReportPlayProtActive(void);
+
+/*--------------------------------------------------------------------------
+Function: sequencer_ReportPlayProtStopped
+Owner   :
+
+Input   : void
+Output  : void
+
+Local   : -
+Global  : -
+
+Description: 
+---------------------------------------------------------- end of comment */
+seq_export void sequencer_ReportPlayProtStopped(void);
+
+/*--------------------------------------------------------------------------
+Function: sequencer_get_playProt_state
+Owner   :
+
+Input   : void
+Output  : BOOL
+
+Local   : -
+Global  : -
+
+Description: 
+---------------------------------------------------------- end of comment */
+seq_export BOOL sequencer_get_playProt_state(void);
+
+/*--------------------------------------------------------------------------
+Function: sequncer_SetDiagEnable
+Owner   :
+
+Input   : void
+Output  : void
+
+Local   : -
+Global  : -
+
+Description: Sensor Haupttask
+---------------------------------------------------------- end of comment */
+seq_export void sequncer_SetDiagEnable(BOOL BO_setEnable);
+/*--------------------------------------------------------------------------
+Function: sequncer_set_sensor_PonState
+Owner   :
+
+Input   : void
+Output  : void
+
+Local   : -
+Global  : -
+
+Description: Sensor Haupttask
+---------------------------------------------------------- end of comment */
+seq_export void sequncer_set_sensor_PonState(void);
+/*--------------------------------------------------------------------------
+Function: TASK_Do_Sensor
+Owner   :
+
+Input   : void
+Output  : void
+
+Local   : -
+Global  : -
+
+Description: Sensor Haupttask
+---------------------------------------------------------- end of comment */
+/* polyspace< MISRA-C3:D4.5,8.5 : Not a defect : Justify with annotations > The extern seq_export is used for backwards compatibility. */
+seq_export void sequncer_sensor_handle_task( EN_SENSOR_MODE mode );
+/*--------------------------------------------------------------------------
+Function: sequencer_sensor_init_Task
+Owner   :
+
+Input   : void
+Output  : void
+
+Local   : -
+Global  : -
+
+Description: Initialisiert den sensor sequencer in PON-Reset
+---------------------------------------------------------- end of comment */
+seq_export void sequencer_sensor_init_Task( void );
+
+/*--------------------------------------------------------------------------
+Function: Sensor_Scan_Both_LP
+Owner   :
+
+Input   : void
+Output  : void
+
+Local   : -
+Global  : -
+
+Description: this is the interface to call the lock and unclok sensors aquisition MECVD.
+---------------------------------------------------------- end of comment */
+seq_export void  Sensor_Scan_Both_LP(void);
+
+
+#endif
+/* Automatic logging by PVCS ***********************************************
+$Log:   J:/vmfs/VW/1508.008_380_ODH/archives/3_Coding/ECU_NFC_STACK-NXP/MCU_RL78/MOD_SERV_CAPA_SENSOR/MOD_SERV_SENSOR_SEQ/Source/sensor_sequencer.hi-arc  $
+ * 
+ *    Rev 1.2   Oct 01 2018 15:28:42   ybadal
+ * - new 50 bytes parameter partially implemented.
+ * - add playprotection for kessy.
+ * 
+ *    Rev 1.1   Feb 16 2018 11:24:42   ybadal
+ * -  sensor will be now disabled from the ECUM when Uplc undervoltage detected.
+ *  -  stop sending IL Can Frame if service not started.
+ * 
+ *    Rev 1.0   Sep 22 2017 16:12:24   Sbhanda
+ * Initial revision.
+ * 
+ *    Rev 1.1   Jul 24 2017 15:37:26   ybadal
+ * sequencer_Task_Do_Sensor_On_Active for active mode
+ * 
+ *    Rev 1.0   Apr 13 2017 13:24:50   ufalkne
+ * Initial revision.
+ * 
+ *    Rev 1.4   09 Sep 2015 10:54:40   umuelle3
+ * MISRA changes proposed by Polyspace.
+ * 
+ *    Rev 1.3   22 May 2015 11:08:04   ybadal
+ * - Redesign des Mechanismus mit dem Aktive Mode.
+ * 
+ *    Rev 1.2   Jan 26 2015 13:07:06   mstei
+ * Changes for compliance with CSpec-095 Rev. 01 - Guideline for Software Coding.pdf:
+ * - changes in the header of the file
+ * - change to add PVCS history
+
+*********************************************************** end of comment */

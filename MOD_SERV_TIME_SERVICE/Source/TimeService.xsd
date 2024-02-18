@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--Created with Liquid Studio 2017 - XML Editor Edition 15.1.16.7872 (https://www.liquid-technologies.com)-->
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="TimeService">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="TimeServGeneral">
+                    <xs:complexType>
+                        <xs:attribute name="Predefined_Timer" type="xs:string">
+                            <xs:annotation>
+                                <xs:documentation>The user shall select the predefined free running timer from GPT used to generate the software timers.</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="Uc_Used" default="RL78">
+                            <xs:annotation>
+                                <xs:documentation>The user shall select the uc used.</xs:documentation>
+                            </xs:annotation>
+                            <xs:simpleType>
+                                <xs:restriction base="xs:string">
+                                    <xs:enumeration value="RL78" />
+                                    <xs:enumeration value="S32K" />
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:attribute>
+                        <xs:attribute name="FTM_ModuleIndex">
+                            <xs:annotation>
+                                <xs:documentation>Please input the assigned FTM hardware module index (0-7) for the predefined timer (GPT configuration). 
+e.g. if the hardware channel of the predefined timer is FTM_1_CH_0, the module index (the number that needs to be written here) is 1. 
+This attribute is available only for S32K. </xs:documentation>
+                            </xs:annotation>
+                            <xs:simpleType>
+                                <xs:restriction base="xs:string">
+                                    <xs:pattern value="^[0-7]{0,1}$" />
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:attribute>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Scripts">
+                    <xs:complexType>
+                        <xs:attribute name="path" fixed="TimeService.cs" type="xs:string" use="required" />
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="TimeServConfig">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="TimeServ_16BitsSoftwareTimer" minOccurs="0" maxOccurs="255">
+                                <xs:complexType>
+                                    <xs:attribute name="SoftwareTimer_Name" type="xs:string">
+                                        <xs:annotation>
+                                            <xs:documentation>The user shall select a name for the timer</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:attribute>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="TimeServ_32BitsSoftwareTimer" minOccurs="0" maxOccurs="255">
+                                <xs:complexType>
+                                    <xs:attribute name="SoftwareTimer_Name" type="xs:string">
+                                        <xs:annotation>
+                                            <xs:documentation>The user shall select a name for the timer</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:attribute>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="TimeServ_SlowTimer_1ms" minOccurs="0" maxOccurs="255">
+                                <xs:complexType>
+                                    <xs:attribute name="SoftwareTimer_Name" type="xs:string">
+                                        <xs:annotation>
+                                            <xs:documentation>The user shall select a name for the timer</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:attribute>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

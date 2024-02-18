@@ -1,0 +1,87 @@
+/*------------------------------------------------------------------------------------------------+
+| File: inductive_sensor_algo.hi                                                                  |
++-------------------------------------------------------------------------------------------------+
+| Project: Audi eTab                                                                              |
++-------------------------------------------------------------------------------------------------+
+| Short description:    Header file for exported data types, macros and description of prototypes |
+| of the interface functions                                                                      |                                                                                                 |
+|                                                                                                 |
+|                                                                                                 |
+|                                                                                                 |
++------------------------------------------------------------------------------------------------*/
+#ifndef INDUCTIVE_SENSOR_ALGO_HI
+#define INDUCTIVE_SENSOR_ALGO_HI
+
+/*********************************************************************************************************
+ *  Name                   : Inductive_Sensor_Algo
+ *  Description            : interface to handle whole inductive algo including init.
+ *                         :
+ *  Parameters             : none
+ *  Return                 : none
+ *  Critical/explanation   : -
+ *   Author                : hcostin
+ *********************************************************************************************************/
+extern void Inductive_Sensor_Algo(void);
+
+/*********************************************************************************************************
+ *  Name                   : Inductive_Algo_SMState_GetDiagData
+ *  Description            : interface to get algo state.
+ *                         :
+ *  Parameters             : pu8buffer
+ *  Return                 : none
+ *  Critical/explanation   : -
+ *   Author                : hcostin
+ *********************************************************************************************************/
+/* polyspace <MISRA-C3:D4.5 : Not a defect: Justify with annotations > it is a function local variable so it has only minor meaning in module level */
+extern void Inductive_Algo_SMState_GetDiagData(U8 *pu8buffer);
+
+/*********************************************************************************************************
+ *  Name                   : Inductive_Algo_ThresholdValue_GetDiagData
+ *  Description            : interface to get Threshold Value.
+ *                         :
+ *  Parameters             : pu32buffer
+ *  Return                 : none
+ *  Critical/explanation   : -
+ *   Author                : hcostin
+ *********************************************************************************************************/
+extern void Inductive_Algo_ThresholdValue_GetDiagData(U32 *pu32buffer);
+
+/*********************************************************************************************************
+ *  Name                   : Induictive_Algo_Set_Debounce_Normal
+ *  Description            : interface to set the debounce normal
+ *                         : 
+ *  Parameters             : none
+ *  Return                 : 
+ *  Critical/explanation   : -
+ *   Author                : hcostin
+ *********************************************************************************************************/
+extern void Induictive_Algo_Set_Debounce_Normal(void);
+
+/*********************************************************************************************************
+ *  Name                   : Induictive_Algo_Set_Debounce_Active
+ *  Description            : interface to set the debounce active
+ *                         : 
+ *  Parameters             : none
+ *  Return                 : 
+ *  Critical/explanation   : -
+ *   Author                : hcostin
+ *********************************************************************************************************/
+extern void Induictive_Algo_Set_Debounce_Active(void);
+
+extern void Inductive_Sensor_Algo_Init(void);
+
+/*********************************************************************************************************
+ *  Name                   : storeParametersFromNVM
+ *  Description            : Store low and high ticks parameters from NVM.
+ *                         :
+ *  Parameters             : none
+ *  Return                 : none
+ *  Critical/explanation   : -
+ *   Author                : grovent
+ *********************************************************************************************************/
+
+extern void storeParametersFromNVM(void);
+
+extern U8 Algo_getKY_Oeffnen_BetaetigungSignal(void);
+
+#endif   /* INDUCTIVE_SENSOR_ALGO_HI */

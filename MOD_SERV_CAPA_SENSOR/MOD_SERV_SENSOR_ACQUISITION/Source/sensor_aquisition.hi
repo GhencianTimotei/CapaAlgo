@@ -1,0 +1,145 @@
+/*!
+ * \defgroup  (sensor_aquistion.hi) Main Program
+ * \{
+ ******************************************************************************
+ * \image html
+ *
+ * \par Module Owner:
+ *   Huf H&uuml;lsbeck & F&uuml;rst GmbH & Co. KG \n
+ *   Steeger Str. 17 \n
+ *   42551 Velbert \n
+ *   Department PDES
+ *
+ * \par Initial Project:
+ *   - 1508.008_380_ODH
+ *
+ ******************************************************************************
+ * \par Description:
+ *
+ * sensor acquisition layer ,depend on  Which measurement unit is active perform the cvd
+ * or the mcvd measurement.
+ *
+ ******************************************************************************
+ *
+ *  $Workfile:   sensor_aquisition.hi  $
+ *  $Revision:   1.0  $
+ *  $Date::   Sep 22 2017 16:12:16  $
+ *  $Author:   Sbhanda  $
+ *
+ ******************************************************************************
+ *
+ * \par Purpose:
+ *    OS, main part of operation system
+ *
+ * \par Compiler:
+ *    ANSI, GHS specific pragmas for interrupt handling
+ *
+ * \par Controller:
+ *    -
+ *
+ * \res_start
+ *    \res_item{ROM,             0 kByte, }
+ *    \res_item{RAM,             0  Byte, }
+ *    \res_item{EEPROM,          0 Byte , }
+ *    \res_item{Runtime Init,    X ms   , }
+ *    \res_item{Runtime Task,    X ms   , }
+ * \res_end
+ *
+ *
+ * \qual_start
+ *    \qual_item{Maintainability,   0,  0,  0,  0}
+ *    \qual_item{Analyzeability ,   0,  0,  0,  0}
+ *    \qual_item{Changeability  ,   0,  0,  0,  0}
+ *    \qual_item{Stability      ,   0,  0,  0,  0}
+ *    \qual_item{Testability    ,   0,  0,  0,  0}
+ * \qual_end
+ *
+ * \par MISRA rules violations:
+ *   \li t.b.d.
+ *
+ ******************************************************************************
+ *
+ * \attention
+ *   \li -
+ *
+ ******************************************************************************
+ *
+ * \par Changes:
+ ******************************************************************************/
+#ifndef SENSOR_AQUISITION_HI
+#define SENSOR_AQUISITION_HI
+#ifdef INTEGRATE_FROM_V4
+#include "config.h"
+#endif
+#ifndef INTEGRATE_FROM_V4
+#include "Platform_Types.h"
+#endif
+
+typedef enum
+{
+#ifndef VARIANT_1
+   SENSOR_LOCK,
+#endif
+   SENSOR_UNLOCK,
+   SENSOR_MAX
+ 
+}EN_SENSOR_ID;
+
+/* polyspace:begin <MISRA-C3:D4.8 : Not a defect : Justify with annotations > No impact on functionality, just code encapsulation related */
+typedef struct
+{
+    U16 U16_Sensor_SA_Value;
+    U16 U16_Sensor_SB_Value;
+}SENSOR_MEASURE_VALUE_T;
+
+
+/* polyspace:begin <MISRA-C3:8.7: Not a defect : Justify with annotations > External Usage dependent on project setup*/
+/* polyspace < MISRA-C3:8.4: Not a defect : Justify with annotations > External Usage dependent on project setup*/
+SENSOR_AQ_EXPORT  SENSOR_MEASURE_VALUE_T S_UnlockRaw[U8_SENSOR_MULTISAMPLING_LOOP+U8_SENSOR_INI_OFFSET];/*buffer to store unlock sensor raw values*/
+/* polyspace < MISRA-C3:8.4: Not a defect : Justify with annotations > External Usage dependent on project setup*/
+SENSOR_AQ_EXPORT  SENSOR_MEASURE_VALUE_T S_LockRaw[U8_SENSOR_MULTISAMPLING_LOOP+U8_SENSOR_INI_OFFSET]   ;/*buffer to store lock sensor raw values*/
+
+/* polyspace:end <MISRA-C3:8.7: Not a defect : Justify with annotations > External Usage dependent on project setup*/
+
+
+SENSOR_AQ_EXPORT void Sensor_aquisition_init(void);
+SENSOR_AQ_EXPORT void Sensor_Scan_Both(void);
+SENSOR_AQ_EXPORT SENSOR_MEASURE_VALUE_T* Get_Sensor_Scan_ER(void);
+SENSOR_AQ_EXPORT SENSOR_MEASURE_VALUE_T* Get_Sensor_Scan_VR(void);
+
+
+
+/*variable MCVD */
+/* polyspace < MISRA-C3:8.4: Not a defect : Justify with annotations > External Usage dependent on project setup*/
+/* polyspace < CERT-C:CON43-C : Not a defect : Justify with annotations > No concurrency on this variable */
+SENSOR_AQ_EXPORT  SENSOR_MEASURE_VALUE_T * AU_sensor_raw_buffer[SENSOR_MAX];/*pointer to buffer to store unlock sensor raw values*/
+/*
+SENSOR_AQ_EXPORT U8    U8_asm_unlock_shortBurstFlag ;
+SENSOR_AQ_EXPORT U8    U8_asm_lock_shortBurstFlag ;
+SENSOR_AQ_EXPORT BOOL  BO_PowerUpDone_Flag;
+*/
+/* not used, should be kept for future usage */
+/* polyspace < MISRA-C3:8.4: Not a defect : Justify with annotations > External Usage dependent on project setup*/
+SENSOR_AQ_EXPORT BOOL  BO_asm_SampleAB_Flag ; /* used to switch between sample A to sample B */
+/* polyspace < MISRA-C3:8.4: Not a defect : Justify with annotations > External Usage dependent on project setup*/
+SENSOR_AQ_EXPORT BOOL  BO_LF_Signal_detected; /* flag for high/low frequency */
+
+
+
+/* Automatic logging by PVCS ***********************************************
+
+$Log:   J:/vmfs/VW/1508.008_380_ODH/archives/3_Coding/ECU_NFC_STACK-NXP/MCU_RL78/MOD_SERV_CAPA_SENSOR/MOD_SERV_SENSOR_AQUISITION/Source/sensor_aquisition.hi-arc  $
+ * 
+ *    Rev 1.0   Sep 22 2017 16:12:16   Sbhanda
+ * Initial revision.
+ * 
+ *    Rev 1.0   Aug 07 2017 15:49:34   ybadal
+ * Initial revision.
+ * 
+ *    Rev 1.0   19 Oct 2015 12:25:00   ybadal
+ * Initial revision.
+ * 
+ *********************************************************** end of comment */
+#endif /*SENSOR_AQUISITION_HI*/
+
+

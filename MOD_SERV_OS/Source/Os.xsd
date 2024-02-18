@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--Created with Liquid Studio 2017 - XML Editor Edition 15.1.16.7872 (https://www.liquid-technologies.com)-->
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="OsServ">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="OsServGeneral" minOccurs="1" maxOccurs="1">
+                    <xs:complexType>
+                        <!--
+                   	    <xs:attribute name="OsNonCyclicTasks" fixed="false" type="xs:boolean" use="required">
+                            <xs:annotation>
+                                <xs:documentation>Enable/disable use of non-cyclic tasks </xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+						-->
+                        <xs:attribute name="OsBackgroundTask" default="false" type="xs:boolean">
+                            <xs:annotation>
+                                <xs:documentation>Enable/disable background task functionality.
+true: Background task is enabled 
+false: Background task is disabled</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="OsEnableDisableAllInterruptsAPIs" default="false" type="xs:boolean">
+                            <xs:annotation>
+                                <xs:documentation>Enable not nestable APIs for enable/disable interrupts: EnableAllInterrupts/DisableAllInterrupts. If nesting is needed for critical sections SuspendAllInterrupt/ResumeAllInterrupts should be used.</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="OsTaskHooks" default="false" type="xs:boolean">
+                            <xs:annotation>
+                                <xs:documentation>Enable pre/post task hooks. PreTaskHook() and PostTaskHook() functions shall be implemented. </xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="OsStartupHook" default="false" type="xs:boolean">
+                            <xs:annotation>
+                                <xs:documentation>Enable startup hook. StartupHook() function shall be implemented. StartupHook() routine is called by the operating system at the end of the operating system initialization and before the scheduler is running. At this time the application can initialize device drivers etc.</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="OSGetReleaseResourceAPIs" default="false" type="xs:boolean">
+                            <xs:annotation>
+                                <xs:documentation>Enable/disable APIs for getting or releasing a resource. 
+For current implementation only Scheduler resource RES_SCHEDULER is implemented and it is automaticaly added into code. Other resources can not be added. With GetResource(RES_SCHEDULER) the Scheduler resource will be aquired so no tasks will be executed. For releasing the resource ReleaseResource(RES_SCHEDULER) shall be used. 
+These functions can be used for different sleep modes. 
+Note that these APIs only stops/starts the scheduling of the tasks, they do not stop/start the OS timer or the timer interrupt, this shall be done by user using the available interfaces.</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="OsConformanceClass" default="BCC1">
+                            <xs:annotation>
+                                <xs:documentation>
+• BCC1 (only basic tasks, limited to one activation request per task and one task per priority, while all tasks have different priorities)
+• BCC2 (like BCC1, plus more than one task per priority possible and multiple requesting of task activation allowed)</xs:documentation>
+                            </xs:annotation>
+                            <xs:simpleType>
+                                <xs:restriction base="xs:string">
+                                    <xs:enumeration value="BCC1" />
+                                    <xs:enumeration value="BCC2" />
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:attribute>
+                        <xs:attribute name="GetElapsedValueEn" default="false" type="xs:boolean">
+                            <xs:annotation>
+                                <xs:documentation>Enable GetElapsedValue API.</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="GetCounterValueEn" default="false" type="xs:boolean">
+                            <xs:annotation>
+                                <xs:documentation>Enable GetCounterValue API.</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="OsBackgroundTaskName" use="optional">
+                            <xs:annotation>
+                                <xs:documentation>Name of the background task. Function name shall be configured in case OsBackgroundTask attribute is enabled.
+The function must have the following prototype: extern void funcName(void)
+                                </xs:documentation>
+                            </xs:annotation>
+                            <xs:simpleType>
+                                <xs:restriction base="xs:string">
+                                    <xs:whiteSpace value="collapse" />
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:attribute>
+                        <xs:attribute name="OsServIncludeHeaderFile" use="optional">
+                            <xs:annotation>
+                                <xs:documentation>Add include header file if necessary. This file will be included into Os_Cfg.h and it could be necessary in case integrating HUF OS with Vector generated code. </xs:documentation>
+                            </xs:annotation>
+                            <xs:simpleType>
+                                <xs:restriction base="xs:string" />
+                            </xs:simpleType>
+                        </xs:attribute>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="OsServTaskConfig" minOccurs="1" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="OsCyclicTask" minOccurs="1" maxOccurs="255">
+                                <xs:annotation>
+                                    <xs:documentation>This container represents an OSEK task.</xs:documentation>
+                                </xs:annotation>
+                                <xs:complexType>
+                                    <xs:attribute name="OsTaskName" use="required">
+                                        <xs:annotation>
+                                            <xs:documentation>Name of the task. Make sure to call TerminateTask() function at the end of the task. </xs:documentation>
+                                        </xs:annotation>
+                                        <xs:simpleType>
+                                            <xs:restriction base="xs:string">
+                                                <xs:pattern value="^[A-Za-z_][A-Za-z_0-9]*$" />
+                                            </xs:restriction>
+                                        </xs:simpleType>
+                                    </xs:attribute>
+                                    <xs:attribute name="OsTaskActivation" default="1" type="xs:unsignedInt">
+                                        <xs:annotation>
+                                            <xs:documentation>Defines the maximum number of queued activation requests for the task.</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:attribute>
+                                    <xs:attribute name="OsTaskPriority" use="required">
+                                        <xs:annotation>
+                                            <xs:documentation>This value has to be understood as a relative value, i.e. the values show only the relative ordering of the tasks.
+OSEK OS defines the lowest priority as zero (0); larger values correspond to higher priorities.</xs:documentation>
+                                        </xs:annotation>
+                                        <xs:simpleType>
+                                            <xs:restriction base="xs:unsignedInt">
+                                                <xs:minInclusive value="0" />
+                                            </xs:restriction>
+                                        </xs:simpleType>
+                                    </xs:attribute>
+                                    <xs:attribute name="OsTaskSchedule" fixed="NON" use="required">
+                                        <xs:annotation>
+                                            <xs:documentation>Defines the preemptability of the task.
+NON: The tasks is non preemptive;
+FULL: The task is preemptive. </xs:documentation>
+                                        </xs:annotation>
+                                        <xs:simpleType>
+                                            <xs:restriction base="xs:string">
+                                                <xs:enumeration value="FULL" />
+                                                <xs:enumeration value="NON" />
+                                            </xs:restriction>
+                                        </xs:simpleType>
+                                    </xs:attribute>
+                                    <!--
+									<xs:attribute name="OsTaskAutostart" fixed="true" type="xs:boolean" use="required">
+                                        <xs:annotation>
+                                            <xs:documentation>Alarm associated to the task is started during startup.</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:attribute>
+									-->
+                                    <xs:attribute name="OsTaskCycleTimeMs" use="required">
+                                        <xs:annotation>
+                                            <xs:documentation>Cycle time in ms 
+Type: float 
+Restrictions: Has to be a multiple of OS tick time </xs:documentation>
+                                        </xs:annotation>
+                                        <xs:simpleType>
+                                            <xs:restriction base="xs:float">
+                                                <xs:minExclusive value="0" />
+                                            </xs:restriction>
+                                        </xs:simpleType>
+                                    </xs:attribute>
+                                    <xs:attribute name="OsTaskOffsetMs" use="required">
+                                        <xs:annotation>
+                                            <xs:documentation>Offset in ms until the first execution of the task
+Type: float 
+Restrictions: Has to be a multiple of OS tick time </xs:documentation>
+                                        </xs:annotation>
+                                        <xs:simpleType>
+                                            <xs:restriction base="xs:float">
+                                                <xs:minExclusive value="0" />
+                                            </xs:restriction>
+                                        </xs:simpleType>
+                                    </xs:attribute>
+                                </xs:complexType>
+                                <xs:unique name="OsCyclicTaskName">
+                                    <xs:selector xpath="Os/OsConfig/OsCyclicTask" />
+                                    <xs:field xpath="@OsTaskName" />
+                                </xs:unique>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="OsServAlarmConfig" minOccurs="0" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="OsAlarm" minOccurs="0" maxOccurs="255">
+                                <xs:complexType>
+                                    <xs:attribute name="OsAlarmID" use="required">
+                                        <xs:annotation>
+                                            <xs:documentation>Name of the alarm.</xs:documentation>
+                                        </xs:annotation>
+                                        <xs:simpleType>
+                                            <xs:restriction base="xs:string">
+                                                <xs:pattern value="^[A-Za-z_][A-Za-z_0-9]*$" />
+                                            </xs:restriction>
+                                        </xs:simpleType>
+                                    </xs:attribute>
+                                    <xs:attribute name="OsAlarmCallback" use="required">
+                                        <xs:annotation>
+                                            <xs:documentation>Name of the function that is called when this alarm callback is triggered.
+Alarm-callback routines can have neither parameter nor return value.
+In case no callback functin is used, the attribute is set to NULL.</xs:documentation>
+                                        </xs:annotation>
+                                        <xs:simpleType>
+                                            <xs:restriction base="xs:string">
+                                                <xs:pattern value="^[A-Za-z_][A-Za-z_0-9]*$" />
+                                            </xs:restriction>
+                                        </xs:simpleType>
+                                    </xs:attribute>
+                                </xs:complexType>
+                                <xs:unique id="OsAlarm_UniqKeyId" name="OsAlarm_KeyId">
+                                    <xs:selector xpath="OsServ/OsServAlarmConfig/OsAlarm" />
+                                    <xs:field xpath="@OsAlarmID" />
+                                </xs:unique>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Scripts" minOccurs="1" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:attribute name="Path" fixed="OsGenerationScript.cs" type="xs:string" use="required" />
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

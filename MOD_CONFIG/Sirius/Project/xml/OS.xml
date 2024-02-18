@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<OsServ>
+  <OsServGeneral OsBackgroundTask="true" OsEnableDisableAllInterruptsAPIs="false" OsTaskHooks="false" OsStartupHook="false" OSGetReleaseResourceAPIs="true" OsConformanceClass="BCC1" GetElapsedValueEn="true" GetCounterValueEn="true" OsBackgroundTaskName="BackgroundTask" OsServIncludeHeaderFile="" />
+  <OsServTaskConfig>
+    <OsCyclicTask OsTaskName="Task_5ms" OsTaskActivation="1" OsTaskPriority="10" OsTaskSchedule="NON" OsTaskCycleTimeMs="5" OsTaskOffsetMs="2.5" />
+    <OsCyclicTask OsTaskName="Task_10ms" OsTaskActivation="1" OsTaskPriority="8" OsTaskSchedule="NON" OsTaskCycleTimeMs="10" OsTaskOffsetMs="5" />
+    <OsCyclicTask OsTaskName="Task_25ms" OsTaskActivation="1" OsTaskPriority="6" OsTaskSchedule="NON" OsTaskCycleTimeMs="25" OsTaskOffsetMs="25" />
+    <OsCyclicTask OsTaskName="Task_100ms" OsTaskActivation="1" OsTaskPriority="2" OsTaskSchedule="NON" OsTaskCycleTimeMs="100" OsTaskOffsetMs="20" />
+    <OsCyclicTask OsTaskName="Task_2_5ms" OsTaskActivation="1" OsTaskPriority="1" OsTaskSchedule="NON" OsTaskCycleTimeMs="2.5" OsTaskOffsetMs="2.5" />
+  </OsServTaskConfig>
+</OsServ>

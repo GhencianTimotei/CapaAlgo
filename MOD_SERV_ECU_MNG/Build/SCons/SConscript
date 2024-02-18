@@ -1,0 +1,44 @@
+Import('env_application')
+
+objects = []
+
+#===============================================================================#
+# Application module+s
+#==============================================================================#
+env_app = env_application.Clone()
+
+appl_sources = [
+                '../../Source/EcuM.c'
+               ]
+
+objects += env_app.Object(appl_sources)
+
+
+#==============================================================================#
+# Test suites
+#==============================================================================#
+#env_test.TestSuite('../../Source/UnitTest/LIN_Drv_78K0R_Test.c',
+					#['../../Source/LIN_Drv_78K0R.c'],
+					#[
+					#'../../Source/UnitTest/LIN_Drv_Stub.c',
+					#'../../../../../MOD_PROG_FRAME/Source/UnitTest/registers_stubs.c',
+					#'../../../../../MOD_PROG_FRAME/Source/UnitTest/compiler_specific_stubs.c'
+					#],
+					#'APPL')
+					
+#env_test.TestSuite('../../Source/UnitTest/LIN_Drv_Test.c',
+#					['../../Source/LIN_Drv.c'],
+#					[
+#					'../../../MOD_MCAL_78K0R_LIN_DRV/Source/UnitTest/LIN_Drv_78K0R_Stub.c',
+#					'../../../MOD_SERV_LIN_SIGNAL/Source/UnitTest/LIN_Signal_Stub.c',
+#					'../../../MOD_SERV_LIN_TP/Source/UnitTest/LIN_TP_Stub.c',
+#					'../../../../../MOD_PROG_FRAME/Source/UnitTest/registers_stubs.c',
+#					'../../../../../MOD_PROG_FRAME/Source/UnitTest/compiler_specific_stubs.c'
+#					],
+#					'APPL')
+
+
+#==============================================================================#
+# Return objects
+#==============================================================================#
+Return('objects')

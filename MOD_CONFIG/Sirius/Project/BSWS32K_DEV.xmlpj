@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BSWS32K_DEV xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <module Name="OsMcal" XsdPath="..\..\..\MOD_MCAL_OS\Source\Os_Mcal.xsd" XmlPath="xml\Os_Mcal.xml" />
+  <module Name="OsServ" XsdPath="..\..\..\MOD_SERV_OS\Source\Os.xsd" XmlPath="xml\OS.xml" />
+  <module Name="EcuM" XsdPath="..\..\..\MOD_SERV_ECU_MNG\Source\EcuM.xsd" XmlPath="xml\EcuM.xml" />
+  <module Name="BatMon" XsdPath="..\..\..\MOD_SERV_BATTERY_MONITORING\Source\BatMon.xsd" XmlPath="xml\BatMon.xml" />
+  <module Name="TimeService" XsdPath="..\..\..\MOD_SERV_TIME_SERVICE\Source\TimeService.xsd" XmlPath="xml\TimeService.xml" />
+</BSWS32K_DEV>
