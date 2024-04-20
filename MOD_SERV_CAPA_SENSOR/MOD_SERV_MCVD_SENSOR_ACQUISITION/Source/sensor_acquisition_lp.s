@@ -65,7 +65,6 @@ Toggle_Macro macro
 ;/*!
 ;******************************************************************************
 ;FUNCTION     : _SensorAcq_mcvd_both_scan_LP
-;author       : hcostin
 ;Input        : void
 ;Output       : void
 ;

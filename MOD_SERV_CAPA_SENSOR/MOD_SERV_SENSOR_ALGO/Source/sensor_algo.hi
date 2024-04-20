@@ -1,77 +1,3 @@
-/*!
- * \defgroup <module_group (sensor_algo.c) Module purpose>
- * \{
- ******************************************************************************
- * \image html "Kopf_oZusatz_A4hoch_4C.jpg"
- *
- * \par Module Owner:
- *   Huf H&uuml;lsbeck & F&uuml;rst GmbH & Co. KG \n
- *   Steeger Str. 17 \n
- *   42551 Velbert \n
- *   Department PDE-S
- *
- * \par Initial Project:
- *    0678.005 VW_Vip
- *
- ******************************************************************************
- * \par Description:
- *  after performs the capacitive measurement of all enabled sensors,
- * The measured signals for each sensor are then processed to
- * check for user touches, releases.
- *
- *
- ******************************************************************************
- *
- *  $Workfile:   sensor_algo.hi  $
- *  $Revision:   1.6  $
- *  $Date:   Apr 09 2019 15:59:10  $
- *  $Author:   hlehman2  $
- *
- ******************************************************************************
- * Change history:
- *
- *
- *
- * Add new lines above
- ******************************************************************************
- *
- * \par Purpose:
- *    i.e Operating System, Service Layer
- *
- * \par Compiler:
- *    ANSI
- *
- * \par Controller:
- *    independant
- *
- * \par Resources:
- *    | Resource      | Amount    | Remarks     |
- *    | ------------- | --------: | ----------- |
- *    | ROM           |  X Byte   |             |
- *    | RAM           |  X Byte   |             |
- *    | EEPROM        |  X Byte   |             |
- *    | Runtime Init  |    X ms   |             |
- *    | Runtime Task  |    X ms   |             |
- *
- * \par Quality:
- *    | Factor            | Excl  | Good  | Fair  | Poor  |
- *    | ----------------- | ----: | ----: | ----: | ----: |
- *    | _Maintainability_ |   0 % |   0 % |   0 % |   0 % |
- *    | Analyzability     |   0 % |   0 % |   0 % |   0 % |
- *    | Changeability     |   0 % |   0 % |   0 % |   0 % |
- *    | Stability         |   0 % |   0 % |   0 % |   0 % |
- *    | Testability       |   0 % |   0 % |   0 % |   0 % |
- *
- * \par MISRA rules violations:
- *     \li none(?)
- *
- ******************************************************************************
- *
- * \attention
- *   \li text for Information, to do ..
- *
- ******************************************************************************
-*/
 
 #ifndef SENSOR_ALGO_HI
   #define SENSOR_ALGO_HI
@@ -93,20 +19,12 @@ typedef struct
     U16    accumulator ;     /*< Accumulator's value (must have top 4 bits masked off)*/
 
 }Sensor_AcquisitionData;
-/* polyspace:begin <MISRA-C3:8.6:Not a defect:Justify with annotations> This is not a definition, but a declaration. */
 extern Sensor_AcquisitionData VR_AcquisitionData;
 extern Sensor_AcquisitionData ER_AcquisitionData;
 
 extern U16 U16_ER_Sigma_Delta_Win;                     /* final measurement value ER */
 extern U16 U16_VR_Sigma_Delta_Win;                     /* final measurement value VR */
 
-/* polyspace:begin<MISRA-C3:D4.9 : Not a defect : Justify with annotations > macros is used instant to function to minimize a call overhead and code */ 
-/* polyspace:begin<MISRA-C3:2.5 : Not a defect : Justify with annotations > Libraries are made for more than only this single project and therefore they SHALL BE allowed to contain unused macros*/
-
-
-
-
-/* polyspace:begin <MISRA-C3:19.2,2.3 : Not a defect : Justify with annotations > the only union in the project is used to save code  */
 #define	EN_ER_Approach_u1   0x01U
 #define EN_ER_TOUCH_u1       0x02U
 #define EN_VR_Approach_u1    0x04U
@@ -124,7 +42,6 @@ typedef union
   }_Algo_Bit;
   U8 U8_Algo_Byte;
 } S_ALGO_STATUS_FLAGS;
-/* polyspace:end <MISRA-C3:19.2,2.3 : Not a defect : Justify with annotations > inline asm is required zo assure the measurement time*/
 
 algo_export void algo_init(void);
 algo_export void algo_diag(void);
@@ -154,136 +71,15 @@ BOOL boIsCapaActive(void);
  *  Critical/explanation   : -
  *  Author                 :
  *********************************************************************************************************/
-/* polyspace < MISRA-C3:8.7,8.8 : Not a defect : Justify with annotations > External Usage dependent on project setup*/
 extern boolean isAlgoActive(void);
 
-/* polyspace:begin <MISRA-C3:8.6: Not a defect : Justify with annotations > External Usage dependent on project setup*/
-/* polyspace < MISRA-C3:8.4: Not a defect : Justify with annotations > External Usage dependent on project setup*/
 algo_export U16 U16_ER_MeasValue;
-/* polyspace < MISRA-C3:8.4: Not a defect : Justify with annotations > External Usage dependent on project setup*/
 algo_export U16 U16_VR_MeasValue;
-/* polyspace:begin <MISRA-C3:8.6: Not a defect : Justify with annotations > External Usage dependent on project setup*/
-
-/* polyspace:begin <MISRA-C3:8.7: Not a defect : Justify with annotations > External Usage dependent on project setup*/
-/* polyspace < MISRA-C3:8.4: Not a defect : Justify with annotations > External Usage dependent on project setup*/
-/* polyspace < CERT-C:CON43-C : Not a defect : Justify with annotations > No concurrency on this variable */
 algo_export U16 U16_ER_Twert;
-/* polyspace < MISRA-C3:8.4: Not a defect : Justify with annotations > External Usage dependent on project setup*/
-/* polyspace < CERT-C:CON43-C : Not a defect : Justify with annotations > No concurrency on this variable */
 algo_export U16 U16_VR_Twert;
-/* polyspace:end <MISRA-C3:8.7: Not a defect : Justify with annotations > External Usage dependent on project setup*/
-/* polyspace:begin<MISRA-C3:19.4 : Not a defect : Justify with annotations > defines to concatenate 2 strings in the pre-compiler,must be unbraced */
 #define ER_APPROACH     ER_Approach_u1    /* flag notifying that a unlock approach has occured */
 #define ER_TOUCH      ER_TOUCH_u1     /* flag notifying that a unlock TOUCH has occured */
 #define VR_APPROACH     VR_Approach_u1    /* flag notifying that a lock approach has occured */
 #define VR_TOUCH      VR_TOUCH_u1     /* flag notifying that a lock TOUCH  has occured */
-/* polyspace:end<MISRA-C3:19.4 : Not a defect : Justify with annotations > */ 
-
-/* polyspace:end<MISRA-C3:D4.9 : Not a defect : Justify with annotations > */
-/* polyspace:end<MISRA-C3:2.5 : Not a defect : Justify with annotations > */
 
 #endif /* SENSOR_HI */
-/* Automatic logging by PVCS ***********************************************
-
-$Log::   J:/vmfs/VW/1508.008_380_ODH/archives/3_Coding/ECU_NFC_STACK-NXP/MCU_RL78/MOD_SERV_CAPA_SENSOR/MOD_SERV_SENSOR_ALGO/Source/senso$
- * 
- *    Rev 1.6   Apr 09 2019 15:59:10   hlehman2
- * Several Misra fixes
- * 
- *    Rev 1.5   Apr 04 2019 11:08:02   hlehman2
- * MISRA fix
- * 
- *    Rev 1.4   Nov 27 2018 10:11:48   ybadal
- * add parameter check. 
- * - handle system wakeup by sensor approach detection from EcuM
- * 
- *    Rev 1.3   Aug 03 2018 13:34:40   ybadal
- * mask algo result for plc in case of sensor disabled.
- * 
- *    Rev 1.2   May 08 2018 11:13:14   ybadal
- * due to compiler error the function get_sensor_algo_state_result chengeg from returned argument to input argument
- * 
- *    Rev 1.1   06 Apr 2018 08:07:26   ybadal
- * HIS and Misra partialy fixed, based on algo from VW 511 project actual version.
- * 
- *    Rev 1.19   21 Dec 2015 16:32:26   ybadal
- * misra justifications added.
- * 
- *    Rev 1.18   21 Dec 2015 15:33:28   ybadal
- * prosecution of misra violations correction.
- * 
- *    Rev 1.17   17 Dec 2015 18:02:28   ybadal
- * several misra violations fixed.
- * 
- *    Rev 1.16   15 Dec 2015 16:07:20   ybadal
- * bugs fixed for some misra violations.
- * 
- *    Rev 1.15   14 Dec 2015 16:00:50   ybadal
- * moduls and functions Headers changed to HUF standard header.
- * 
- *    Rev 1.14   Nov 16 2015 09:24:58   pclemen
- * some code qualitiy improvements
- * 
- *    Rev 1.13   18 Sep 2015 07:55:56   ybadal
- * New Structure implementiert.(neues messwerk und signal analyse)siehe Prog Info von v04.01
- * 
- *    Rev 1.12   09 Sep 2015 10:58:18   umuelle3
- * MISRA changes proposed by Polyspace.
- * 
- *    Rev 1.11   02 Jun 2015 13:12:14   ybadal
- * Diverse TT Punkte und Review Punkte.
- * 
- *    Rev 1.10   29 May 2015 14:24:42   ybadal
- * - Diverse TT Reviews weiter implementiert.
- * - einige Misra Violation behoben.
- * 
- *    Rev 1.9   28 May 2015 10:52:26   ybadal
- * Huf Guidline SW Coding implementiert.
- * 
- *    Rev 1.8   20 May 2015 16:27:08   ybadal
- * - Diverse Misra Rules behoben.
- * - Abstraction betwenn  sensor aquisition sensor analyse.
- * 
- *    Rev 1.7   12 May 2015 15:48:40   ybadal
- * - Diverse TeamTrack Punkte implementiert.
- * -neue Debouce Zeiten sind jetzt mit dem Timing System realisiert.
- * 
- *    Rev 1.6   13 Feb 2015 13:01:22   ybadal
- * - add comments to the sensor_algo module.
- * -bugfix for TT 9361.
- * 
- *    Rev 1.5   Jan 26 2015 15:10:06   mstei
- * Changes for compliance with CSpec-095 Rev. 01 - Guideline for Software Coding.pdf:
- * - name of the project changed in the header of the file
- * - naming convention for variables
- * - comments from C++ were modified to C comments
- * 
- *    Rev 1.4   15 Sep 2014 15:28:58   ybadal
- * Rausch Analyse wird nicht bei ausgel�sten Sensor ausgef�hrt.
- * 
- *    Rev 1.3   22 May 2014 16:41:06   ybadal
- * - Bug Fixed for Team Track Error : TT8640 ,TT8623 und TT8621.
- * -72 Hours Low Power Message implementiert.
- * -Power up Message implementiert.
- * 
- *    Rev 1.2   12 May 2014 17:15:32   ybadal
- * -VW Kommunication implementiert.
- * - Bug Fix for TT 8621
- * 
- *    Rev 1.1   23 Apr 2014 13:48:00   apeschl
- * Deklaration U16_ER_Twert & U16_VR_Twert in sensor_algo.hi verschoben
- * 
- *    Rev 1.0   28 Mar 2014 14:10:46   ybadal
- * Initial revision.
- * 
- *    Rev 1.0   25 Nov 2013 09:44:16   ufalkne
- * Initial revision.
- * 
- *    Rev 1.1   19 Nov 2013 11:30:14   ybadal
- * - Umsetzung des Code Reviews von 07.11.13.
- * (Siehe Proginfo von 19.11.2013 v01.04 )
- * 
- *    Rev 1.0   Oct 24 2013 15:48:22   pclemen
- * Initial revision.
- * 
-*********************************************************** end of comment */

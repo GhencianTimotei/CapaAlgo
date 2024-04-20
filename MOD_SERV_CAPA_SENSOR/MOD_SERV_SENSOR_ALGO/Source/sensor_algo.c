@@ -68,6 +68,16 @@ STATIC U16 U16_ER_Freeze_Threshold_Ref;
 STATIC U16 U16_VR_Freeze_Threshold_Ref;
 STATIC U16 U16_ER_Tracking_Threshold;
 STATIC U16 U16_VR_Tracking_Threshold;
+STATIC U16 U16_VR_Touch_Threshold;
+
+void getRefThreshold(U16 * buff)
+{
+    *(buff) = U16_ER_RefWert;
+    *(buff+1) = U16_VR_RefWert;
+    *(buff+2) = U16_ER_Freeze_Threshold_Ref;
+    *(buff+3) = U16_VR_Freeze_Threshold_Ref;
+    *(buff+4) = U16_VR_Touch_Threshold;
+}
 
 /************* Local Functions **********************************/
 STATIC void Unlock_UpdateBaseline(void);
@@ -885,7 +895,6 @@ STATIC BOOL_BITS_T Get_Vr_Approach_Detect(void)
     Return_bo.touch = U8_NULL;
     if ((U32)U16_MAX_VALUE <=
         (((U32)ST_lock_sensor_NVM_params.U16_P_VR_NOISE_OFFSET + (U32)ST_lock_sensor_NVM_params.U16_P_VR_TOUCH_THRESHOLD + (U32)ST_lock_sensor_NVM_params.U16_P_VR_APPROACH_THRESHOLD) + (U32)U16_VR_RefWert))
-    /* polyspace < RTE:UNR : Not a defect : Justify with annotations> The condition is not redundant*/
     {
         /* TT 09801*/
         U16_VR_Twert = U16_MAX_VALUE;
@@ -898,7 +907,6 @@ STATIC BOOL_BITS_T Get_Vr_Approach_Detect(void)
         Lock_UpdateBaseline_by_noise();
         /*check if unlock Sensor reading is  crossed the baseline by at least the  threshold*/
         if (U16_VR_MeasValue > U16_VR_Twert) /* If reading has crossed the  threshold */
-                                             /* polyspace < RTE:UNR : Not a defect : Justify with annotations> The condition is not redundant*/
         {
             Return_bo.approach = U8_SET_BIT;
         }
@@ -906,19 +914,15 @@ STATIC BOOL_BITS_T Get_Vr_Approach_Detect(void)
         {
             /*do nothing*/
         }
-        /* polyspace <MISRA-C3:D4.1,12.1 : Not a defect : Justify with annotations > "No Error: Checks at beginning of function and in algo_check_parameters make sure that both overflow and underflow will not occur" */
+        U16_VR_Touch_Threshold = U16_VR_RefWert + ST_lock_sensor_NVM_params.U16_P_VR_TOUCH_THRESHOLD;
         if (U16_VR_MeasValue > U16_VR_Twert + (ST_lock_sensor_NVM_params.U16_P_VR_TOUCH_THRESHOLD - ST_lock_sensor_NVM_params.U16_P_VR_APPROACH_THRESHOLD)) /* polyspace RTE:OVFL [Not a defect:Low] "No Error: Checks at beginning of function and in algo_check_parameters make sure that both overflow and underflow will not occur" */
-        /* polyspace < RTE:UNR : Not a defect : Justify with annotations> The condition is not redundant*/
         {
             Return_bo.touch = U8_SET_BIT;
-            U16_VR_Twert = U16_VR_Twert + (ST_lock_sensor_NVM_params.U16_P_VR_TOUCH_THRESHOLD - ST_lock_sensor_NVM_params.U16_P_VR_APPROACH_THRESHOLD);
+            
         }
         else if (U8_VrDeactivationThresh != U8_NULL) /* verify if sensor was in TOUCH state */
         {
-            /* keep the touch threshold also for OFF DEL+AY state */
-            /* polyspace < RTE:OVFL : Not a defect : Justify with annotations >"The index is not outside of the boundaries and the operation will not result into an overflow." */
-            U16_VR_Twert += (ST_lock_sensor_NVM_params.U16_P_VR_TOUCH_THRESHOLD - ST_lock_sensor_NVM_params.U16_P_VR_APPROACH_THRESHOLD);
-            /* polyspace < RTE:OVFL : Not a defect : Justify with annotations >"The index is not outside of the boundaries and the operation will not result into an overflow." */
+
             U8_VrDeactivationThresh--;
         }
         else
@@ -1694,7 +1698,7 @@ STATIC void Lock_StateMachine_Debounce(BOOL_BITS_T BO_VrUnderThres)
     if (U8_SET_BIT == BO_VrUnderThres.approach) /* ER-wert liegt unter der Ausl�seschwelle */
     {
         Lock_check_debounce_time_done();
-        U16_VR_FreezeCounter = 0u;
+        
 
     }
     else
@@ -1912,6 +1916,7 @@ STATIC void Lock_StateMachine_Approach(BOOL_BITS_T BO_VrUnderThres)
 {
     /*set  the Sensor approach signal*/
     SET_SENSOR_ALGO_RESULT(VR_APPROACH, U8_SET_BIT); 
+    U16_VR_FreezeCounter = 0u;
 
     if (((U16)U8_NULL == U16_vr_active_max_time) /*Timeout*/ || (U8_CLEAR_BIT == BO_VrUnderThres.approach))
     {

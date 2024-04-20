@@ -100,7 +100,7 @@ void  CAN_ApplInit(void)
 /* polyspace < MISRA-C3:8.2 : Not a defect : Justify with annotations > The function type is same as in prototype form */
 void CanNM_Appl_CyclicTask(void)
 {
-    U8 U8_NM_activeReasons = 0u;
+    U8 U8_NM_activeReasons = 1u;
     U8 U8_receivedSignalValue = 0u;
     boolean boIsAlgoActive = isAlgoActive();
     U8 requestedComMode;
@@ -124,8 +124,8 @@ void CanNM_Appl_CyclicTask(void)
     /* polyspace+1 MISRA-C3:10.5 [Justified:Low] "will not affect the code" */
     U8_NM_activeReasons = S_NORMAL_OP_Request.u8ActiveKlemme_15 + S_NORMAL_OP_Request.u8ActiveDiagnose;
 
-    if (((U8_NM_activeReasons != 0U) || (boIsAlgoActive != 0U)) && (BatSup_isComOff() == 0u))
-    {
+    // if (((U8_NM_activeReasons != 0U) || (boIsAlgoActive != 0U)) && (BatSup_isComOff() == 0u))
+    // {
         /* wake-up source not triggered, NM message is not filled with proper values */
         if(EcuM_WakeUpLogged == EcuM_WAKE_UP_EXIT_SLEEP)
         {
@@ -139,12 +139,12 @@ void CanNM_Appl_CyclicTask(void)
             /* Start the CAN communication */
             (void)ComM_RequestComMode(0, COMM_FULL_COMMUNICATION);
         }
-    }
-    else
-    {
-        /* Stop the CAN communication */
-        (void)ComM_RequestComMode(0, COMM_NO_COMMUNICATION);
-    }
+    // }
+    // else
+    // {
+    //     /* Stop the CAN communication */
+    //     (void)ComM_RequestComMode(0, COMM_NO_COMMUNICATION);
+    // }
 
     /* Get the current requested ComM mode */
     (void)ComM_GetRequestedComMode(0, &requestedComMode);
