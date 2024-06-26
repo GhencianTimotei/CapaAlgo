@@ -4,137 +4,36 @@
 
 
 
-
-
-
-
-/*------------------------------------------------------------------------
-MACRO   : GET_SENSOR_ALGO_RESULT
-Input   : S_ALGO_STATUS_FLAGS
-Output  : void
-Global  : -
-External: -
-
-Description: Status bit updated during SENSOR Decoding
-------------------------------------------------------------------------*/
 #define GET_SENSOR_ALGO_RESULT(Sensor_state)  (Algo_State_Flags._Algo_Bit.Sensor_state)
-/*------------------------------------------------------------------------
-MACRO   : SET_SENSOR_ALGO_RESULT
-Input   : S_ALGO_STATUS_FLAGS
-Output  : void
-Global  : -
-External: -
 
-Description: Status bit updated during SENSOR Decoding
-------------------------------------------------------------------------*/
 #define SET_SENSOR_ALGO_RESULT(Sensor_state,Value)  ((Algo_State_Flags._Algo_Bit.Sensor_state) = (Value))
 
-
-/*------------------------------------------------------------------------
-MACRO   : RELOAD_ER_REF_VALUE
-Input   : SENSOR
-Output  :
-Global  : -
-External: -
-Description:  The baseline calculation is restarted because updates were stopped for some time
-------------------------------------------------------------------------*/
 #define RELOAD_ER_REF_VALUE()  			(U16_ER_Rekcount) = (U16)0;       /* reset ref. value calculation */\
                                	   	   	U16_ER_Max_Value = 0; /* Update the Maximum */\
 
-
-/*------------------------------------------------------------------------
-MACRO   : RESET_REF_VALUE
-Input   : SENSOR
-Output  :
-Global  : -
-External: -
-Description: Reset  Unlock sensor Baseline to the Maximum 65335,
- * to Prevent thas the Sensor reading value
- *  will cross the baseline during the Initialising Time
-------------------------------------------------------------------------*/
 #define RESET_ER_REF_VALUE()   			(U16_ER_RefWert) = U16_REF_VALUE_MAX;\
                                	   	   	(U16_ER_Rekcount) = (U16)0;       /* reset ref. value calculation */\
 										U16_ER_Max_Value = 0u; /* Update the Maximum */\
 
-
-/*------------------------------------------------------------------------
-MACRO   : SET_ER_SENSOR_ALGO_STATE
-Input   : SENSOR, STATE
-Output  :
-Global  : -
-External: -
-Description: set  the Sensor  active mode state
-------------------------------------------------------------------------*/
 #define SET_ER_SENSOR_ALGO_STATE(STATE)   (EN_ER_AlgoStateSM) = (ENUM_ALGO_SM_STATE_TYPE)(STATE);\
 
-
-/*------------------------------------------------------------------------
-MACRO   : GET_ER_SENSOR_ALGO_STATE
-Input   : SENSOR
-Output  :
-Global  : -
-External: -
-Description: get  the Sensor  active mode state
-------------------------------------------------------------------------*/
 #define GET_ER_SENSOR_ALGO_STATE()  ( (EN_ER_AlgoStateSM))
 
-
-
-
-/*####################*/
-/*------------------------------------------------------------------------
-MACRO   : RELOAD_VR_REF_VALUE
-Input   : SENSOR
-Output  :
-Global  : -
-External: -
-Description:  The baseline calculation is restarted because updates were stopped for some time
-------------------------------------------------------------------------*/
 #define RELOAD_VR_REF_VALUE()  			 (U16_VR_Rekcount) = (U16)0;       /* reset ref. value calculation */\
                                          U16_VR_Max_Value = 0u; /* Update the Maximum */\
 
 
-/*------------------------------------------------------------------------
-MACRO   : RESET_VR_REF_VALUE
-Input   : SENSOR
-Output  :
-Global  : -
-External: -
-Description: Reset  Unlock sensor Baseline to the Maximum 65335,
- * to Prevent thas the Sensor reading value
- *  will cross the baseline during the Initialising Time
-------------------------------------------------------------------------*/
 #define RESET_VR_REF_VALUE()  		    (U16_VR_RefWert) = U16_REF_VALUE_MAX;\
                                         (U16_VR_Rekcount) = (U16)0;       /* reset ref. value calculation */\
                                         U16_VR_Max_Value = 0u; /* Update the Maximum */\
 
-
-/*------------------------------------------------------------------------
-MACRO   : SET_VR_SENSOR_ALGO_STATE
-Input   : SENSOR, STATE
-Output  :
-Global  : -
-External: -
-Description: set  the Sensor  active mode state
-------------------------------------------------------------------------*/
 #define SET_VR_SENSOR_ALGO_STATE(STATE)      (EN_VR_AlgoStateSM) = (ENUM_ALGO_SM_STATE_TYPE)(STATE);\
 
 
-/*------------------------------------------------------------------------
-MACRO   : GET_VR_SENSOR_ALGO_STATE
-Input   : SENSOR
-Output  :
-Global  : -
-External: -
-Description: get  the Sensor  active mode state
-------------------------------------------------------------------------*/
 #define GET_VR_SENSOR_ALGO_STATE()  ( (EN_VR_AlgoStateSM))
 
 
 
-
-
-/*needed to test the algo*/
 extern BOOL EcuM_lock_sensor_blocking(void);
 extern BOOL EcuM_unlock_sensor_blocking(void);
 

@@ -1,134 +1,14 @@
-/*------------------------------------------------------------------------------------------------+
-| Modul: APPL_SENSOR.hm                                                                              |
-+-------------------------------------------------------------------------------------------------+
-| Project: VW511CS                                                                                |
-|          Huf Huelsbeck und Fuerst                                                               |
-|          (Name des Programmierers), PDES                                                        |
-+-------------------------------------------------------------------------------------------------+
-| Short description:                                                                              |
-| CAS Signal Handler, Handler for the CAS SCI IO-Signals and the logic combinations               |
-|                                                                                                 |
-+-------------------------------------------------------------------------------------------------+
-| Changes:                                                                                        |
-| 10.09.13 - DBO first version                                                                    |
-|                                                                                                 |
-+-------------------------------------------------------------------------------------------------+
-| for Information, to do:                                                                         |
-|                                                                                                 |
-+-------------------------------------------------------------------------------------------------+
-| $Revision:   1.0  $                                                                             |
-|                                                                                                 |
-+------------------------------------------------------------------------------------------------*/
+
 #ifndef  APPL_SENSOR_HM
-#define  APPL_SENSOR_HM       /* FileName_C */
+#define  APPL_SENSOR_HM
 
-/*------------------------------------------------------------------------
-MACRO   : SET_APPL_SENSOR_STATE
 
-Input   : APPL_SENSOR_STATE_LIST_T
-
-Output  : void
-Global  : -
-External: -
-
-Description: Status byte updated during communication
-------------------------------------------------------------------------*/
-/* polyspace:begin<MISRA-C3:D4.9 : Not a defect : Justify with annotations > These kind of function-like macro is proven in use. (add Review Ticket ID here!)*/
 #define SET_APPL_SENSOR_STATE(state) ( CasAppl_EN_SciState = (state) )
-/* polyspace:end<MISRA-C3:D4.9 : Not a defect : Justify with annotations > */
-
-/*------------------------------------------------------------------------
-MACRO   : GET_APPL_SENSOR_STATE
-
-Input   : void
-
-Output  : 
-Global  : -
-External: -
-
-Description: Get status byte
-------------------------------------------------------------------------*/
-/* polyspace:begin<MISRA-C3:D4.9 : Not a defect : Justify with annotations > These kind of function-like macro is proven in use. (add Review Ticket ID here!)*/
-/* polyspace < MISRA-C3:2.5 : Not a defect > Justify with annotations > should be kept for future usage */
 #define GET_APPL_SENSOR_STATE() ( CasAppl_EN_SciState )
-/* polyspace:end<MISRA-C3:D4.9 : Not a defect : Justify with annotations > */
-
-/*------------------------------------------------------------------------
-MACRO   : START_SENSOR_TASK
-
-Input   : void
-
-Output  :
-Global  : -
-External: -
-
-Description: Sensor Task starten
-------------------------------------------------------------------------*/
-/* polyspace:begin<MISRA-C3:D4.9 : Not a defect : Justify with annotations > These kind of function-like macro is proven in use. (add Review Ticket ID here!)*/
-/* polyspace:begin<MISRA-C3:2.5 : Not a defect : Justify with annotations > The funktion is in use. (add Review Ticket ID here!)*/
 #define START_SENSOR_TASK()   {                                                            \
                                SET_APPL_SENSOR_STATE(EN_APPL_SENSOR_ACTIVE_MODE_STATE);      \
                                TIMER_FLAG_ACTIVATE (E_TASK_DO_SENSOR_HW_TIMER);            \
                              }
-/* polyspace:end<MISRA-C3:2.5 : Not a defect : Justify with annotations > */
-/* polyspace:end<MISRA-C3:D4.9 : Not a defect : Justify with annotations > */
+
 
 #endif
-/* Automatic logging by PVCS ***********************************************
-$Log:   J:/vmfs/VW/1508.008_380_ODH/archives/3_Coding/ECU_NFC_STACK-NXP/MCU_RL78/MOD_SERV_CAPA_SENSOR/MOD_SERV_SENSOR_SEQ/Source/sensor_sequencer.hm-arc  $
- * 
- *    Rev 1.0   Sep 22 2017 16:12:24   Sbhanda
- * Initial revision.
- * 
- *    Rev 1.1   Aug 07 2017 15:50:56   ybadal
- * - call the new sequence for mcvd or cvd.
- * 
- *    Rev 1.0   Apr 13 2017 13:24:50   ufalkne
- * Initial revision.
- * 
- *    Rev 1.15   10 Sep 2015 13:15:38   umuelle3
- * Misra Test
- * 
- *    Rev 1.14   09 Sep 2015 14:15:30   umuelle3
- * MISRA Changes
- * 
- *    Rev 1.13   09 Sep 2015 14:05:32   umuelle3
- * MISRA changes proposed by Polyspace.
- * 
- *    Rev 1.12   09 Sep 2015 10:54:42   umuelle3
- * MISRA changes proposed by Polyspace.
- * 
- *    Rev 1.11   08 Sep 2015 12:28:24   umuelle3
- * MISRA changes proposed by Polyspace.
- * 
- *    Rev 1.10   08 Sep 2015 11:59:10   umuelle3
- * MISRA changes proposed by Polyspace.
- * 
- *    Rev 1.9   08 Sep 2015 11:41:12   umuelle3
- * MISRA changes proposed by Polyspace.
- * 
- *    Rev 1.8   29 May 2015 09:45:20   ybadal
- * Bug fix for TT10411
- * - Diverse TT Review Punkte abgeschlossen.
- * 
- *    Rev 1.7   22 May 2015 11:08:04   ybadal
- * - Redesign des Mechanismus mit dem Aktive Mode.
- * 
- *    Rev 1.6   13 May 2015 15:19:44   ybadal
- * Bug fix for TT 10412  ,TT 10402 and TT 10397
- * 
- *    Rev 1.5   Feb 04 2015 08:56:18   mstei
- * Naming convention for macros according to CSpec-095 Rev. 01 - Guideline for Software Coding.pdf.
- * 
- *    Rev 1.4   Feb 02 2015 15:02:02   mstei
- * Naming convention for enums according to CSpec-095 Rev. 01 - Guideline for Software Coding.pdf.
- * 
- *    Rev 1.3   Jan 30 2015 16:30:28   mstei
- * Naming convention for preprocessor defines according to CSpec-095 Rev. 01 - Guideline for Software Coding.pdf
- * 
- *    Rev 1.2   Jan 26 2015 13:08:16   mstei
- * Changes for compliance with CSpec-095 Rev. 01 - Guideline for Software Coding.pdf:
- * - changes in the header of the file
- * - change to add PVCS history
-
-*********************************************************** end of comment */

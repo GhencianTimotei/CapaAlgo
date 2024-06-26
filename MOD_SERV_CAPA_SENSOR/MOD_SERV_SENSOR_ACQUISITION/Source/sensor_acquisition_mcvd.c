@@ -1,42 +1,17 @@
-/* polyspace MISRA-C3:1.1 [Justified:Unset] "All macro definitions are needed." */
-/*------------------------------------------------------------------------------------------------+
-| File: sensor_acquisition_mcvd.c                                                                 |
-+-------------------------------------------------------------------------------------------------+
-| Project: Audi eTab                                                                              |
-+-------------------------------------------------------------------------------------------------+
-| Short description:                                                                              |
-|                                                                                                 |
-|                                                                                                 |
-|                                                                                                 |
-|                                                                                                 |
-|                                                                                                 |
-+------------------------------------------------------------------------------------------------*/
-
 /* Header files include */
 #include "sensor_acquisition_mcvd.h"
 #include "S32K144.h"
 #include "Adc.h"
 
 
-/* polyspace:begin < MISRA-C3:8.2,8.5,21.2 : Not a defect : Justify with annotations > The function type is same as in prototype form */
 extern void _SensorAcq_mcvd_both_scan(void);
 extern void _SensorAcq_mcvd_both_scan_LP(void);
 
-/* polyspace:end < MISRA-C3:8.2,8,21.2 : Not a defect : Justify with annotations > The function type is same as in prototype form */
 
 SENSOR_MEASURE_VALUE_T S_UnlockRaw_ASM;/*buffer to store unlock sensor raw values*/
 SENSOR_MEASURE_VALUE_T S_LockRaw_ASM;/*buffer to store lock sensor raw values*/
 
 
-/*************************************************************************************************************
- *  Name                 : Sensor_task_acquisition
- *  Description          : This function starts sensors aquisition in active mode
- *
- *  Parameters           : -
- *  Return               : void
- *  Critical/explanation : -
- *  Author               : bbarlea
- *************************************************************************************************************/
 void Sensor_task_acquisition(void)
 {
     U32 u32CFG1, u32SC2, u32SC3, u32SC1A;
@@ -64,16 +39,6 @@ void Sensor_task_acquisition(void)
     ADC0->SC3 = u32SC3;
 }
 
-/*************************************************************************************************************
- *  Name                 : Sensor_task_acquisition
- *  Description          : This function starts sensors aquisition in low power mode
- *
- *  Parameters           : -
- *  Return               : void
- *  Critical/explanation : -
- *  Author               : bbarlea
- *************************************************************************************************************/
-/* polyspace < MISRA-C3:8.4,8.5 : Not a defect : Justify with annotations > External Usage dependent on project setup */
 void Sensor_task_acquisition_LP(void)
 {
     U32 u32CFG1, u32SC2, u32SC3, u32SC1A;

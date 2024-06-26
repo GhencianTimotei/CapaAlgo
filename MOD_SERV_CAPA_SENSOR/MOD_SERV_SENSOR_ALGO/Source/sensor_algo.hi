@@ -5,12 +5,6 @@
 #include "Platform_Types.h"
 #include "typedefs.h"
 
-#ifdef SENSOR_ALGO_C                        /*  FileName_C */
-  #define algo_export
-#else
-  #define algo_export extern
-#endif
-
 
 typedef struct
 {
@@ -51,26 +45,8 @@ extern void get_sensor_algo_state_result(U8 * U8_algo_state_arg );
 extern void Algo_getErState(U8 *U8_algoState);
 extern void Algo_getVrState(U8 *U8_algoState);
 algo_export BOOL get_sensor_algo_SM_NotIdle(void);
-/*********************************************************************************************************
- *  Name                   : boIsCapaActive
- *  Description            : check if state of capacitive sensors is ACTIVE
- *                         : SSA_165, SSA_348
- *  Parameters             : 
- *  Return                 : TRUE - if a sensor is activated
- *  Critical/explanation   : -
- *  Author                 : 
- *********************************************************************************************************/
 BOOL boIsCapaActive(void);
 
-/*********************************************************************************************************
- *  Name                   : isAlgoActive
- *  Description            : Verify is any sensor is active
- *                         :
- *  Parameters             : none
- *  Return                 : BOOL
- *  Critical/explanation   : -
- *  Author                 :
- *********************************************************************************************************/
 extern boolean isAlgoActive(void);
 
 algo_export U16 U16_ER_MeasValue;

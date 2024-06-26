@@ -1,82 +1,9 @@
-/*!
- * \defgroup  (sensor_aquistion.hm) Main Program
- * \{
- ******************************************************************************
- * \image html
- *
- * \par Module Owner:
- *   Huf H&uuml;lsbeck & F&uuml;rst GmbH & Co. KG \n
- *   Steeger Str. 17 \n
- *   42551 Velbert \n
- *   Department PDES
- *
- * \par Initial Project:
- *   - 1508.008_380_ODH
- *
- ******************************************************************************
- * \par Description:
- *
- * sensor acquisition layer ,depend on  Which measurement unit is active perform the cvd
- * or the mcvd measurement.
- *
- ******************************************************************************
- *
- *  $Workfile:   sensor_aquisition.hm  $
- *  $Revision:   1.1  $
- *  $Date::   17 Apr 2018 16:12:50  $
- *  $Author:   ybadal  $
- *
- ******************************************************************************
- *
- * \par Purpose:
- *    OS, main part of operation system
- *
- * \par Compiler:
- *    ANSI, GHS specific pragmas for interrupt handling
- *
- * \par Controller:
- *    -
- *
- * \res_start
- *    \res_item{ROM,             0 kByte, }
- *    \res_item{RAM,             0  Byte, }
- *    \res_item{EEPROM,          0 Byte , }
- *    \res_item{Runtime Init,    X ms   , }
- *    \res_item{Runtime Task,    X ms   , }
- * \res_end
- *
- *
- * \qual_start
- *    \qual_item{Maintainability,   0,  0,  0,  0}
- *    \qual_item{Analyzeability ,   0,  0,  0,  0}
- *    \qual_item{Changeability  ,   0,  0,  0,  0}
- *    \qual_item{Stability      ,   0,  0,  0,  0}
- *    \qual_item{Testability    ,   0,  0,  0,  0}
- * \qual_end
- *
- * \par MISRA rules violations:
- *   \li t.b.d.
- *
- ******************************************************************************
- *
- * \attention
- *   \li -
- *
- ******************************************************************************
- *
- * \par Changes:
- ******************************************************************************/
 #ifndef SENSOR_AQUISITION_HM
 #define SENSOR_AQUISITION_HM
 
 
-/* polyspace:begin<MISRA-C3:2.5 : Not a defect : Justify with annotations > unused typde is part of HUF base SW*/
-/* polyspace:begin < MISRA-C3:D4.9 : Not a defect : Justify with annotations > This macro is used to facilitate an easy adaptation */
 #define ASM_NOP()  __asm("NOP")
-/* polyspace:begin<MISRA-C3:20.10,21.1: Not a defect : Justify with annotations >  preprocessor ##  is used during compilation to join  strings, it part of HUF Library*/
 #define     __PASTE(a,b)                   a ## b               /* Use this macro to concatenate 2 strings in the pre-compiler */
-/* polyspace:end<MISRA-C3:20.10,21.1: Not a defect : Justify with annotations >*/
-/* polyspace:end < MISRA-C3:D4.9 : Not a defect : Justify with annotations > This macro is used to facilitate an easy adaptation */
 
 #define NOP1    ASM_NOP();
 #define NOP2    NOP1;  NOP1;
@@ -189,7 +116,6 @@
 #define NOP640  NOP540;NOP516;NOP516;
 
 
-/* polyspace:begin<MISRA-C3:D4.9: Not a defect : Justify with annotations > macro is used instead of funtion due to code size optimisation*/
 #define NOP_DELAY(value)        do{\
                                       __PASTE(NOP,value);\
                                   }while(0);                      
@@ -198,19 +124,10 @@
                                    ADS &= ~(U8_BIT5 | U8_BIT6);  \
                                    ADS = (x);                    \
                                   }while(0);            
-/* polyspace:end<MISRA-C3:D4.9 : Not a defect : Justify with annotations > */ 
-
-/* polyspace:end<MISRA-C3:2.5  : Not a defect : Justify with annotations > */ 
 
 /* DIO macros */
 
-/* polyspace:begin <MISRA-C3:D4.9: Not a defect : Justify with annotations > macro is used instead of funtion due to code size optimisation*/
-/* polyspace:begin <MISRA-C3:2.5 : Not a defect : Justify with annotations > unused typde is part of HUF base SW*/
-
-
-/* polyspace:begin <MISRA-C3:19.4,20.10,21.1 : Not a defect : Justify with annotations > defines to concatenate 2 strings in the pre-compiler,must be unbraced */
 #define CONCATENATE(a,b)  __PASTE(a,b)
- /* polyspace:end <MISRA-C3:19.4,20.10,21.1 : Not a defect : Justify with annotations > */
 
 
 #define DIO_READ_PORT(U8_port)      (CONCATENATE(MCU_PORT,U8_port))
@@ -218,67 +135,10 @@
 #define DIO_READ_PIN(U8_port)       (CONCATENATE(MCU_PIN,U8_port))
 #define DIO_WRITE_PIN(U8_port)      (DIO_READ_PIN(U8_port))
 
-/*------------------------------------------------------------------------
-MACRO   : SET_PORT
-
-Input   : void
-
-Output  :
-Global  : -
-External: -
-
-Description: macro to set
-------------------------------------------------------------------------*/
 #define DIO_SET_PORT(modul,port,state)    (CONCATENATE(CONCATENATE(CONCATENATE(MCU_PORT,modul),_bit.no),port)= (state))
-/*------------------------------------------------------------------------
-MACRO   : SET_PIN
-
-Input   : void
-
-Output  :
-Global  : -
-External: -
-
-Description:
-------------------------------------------------------------------------*/
 #define DIO_SET_PIN(modul,pin,state)    (CONCATENATE(CONCATENATE(CONCATENATE(MCU_PIN,modul),_bit.no),pin)= (state))
-
-/*------------------------------------------------------------------------
-MACRO   : SET_ANALOG_PIN
-
-Input   : void
-
-Output  :
-Global  : -
-External: -
-
-Description:
-------------------------------------------------------------------------*/
 #define SET_ANALOG_PIN(modul,pin,state)   (CONCATENATE(CONCATENATE(CONCATENATE(MCU_ANALOG,modul),_bit.no),pin)= (state))
 
-/* polyspace:end <MISRA-C3:2.5  : Not a defect : Justify with annotations > */
-/* polyspace:end <MISRA-C3:D4.9 : Not a defect : Justify with annotations > */
-
-/* Automatic logging by PVCS ***********************************************
-
-$Log:   J:/vmfs/VW/1508.008_380_ODH/archives/3_Coding/ECU_NFC_STACK-NXP/MCU_RL78/MOD_SERV_CAPA_SENSOR/MOD_SERV_SENSOR_AQUISITION/Source/sensor_aquisition.hm-arc  $
- * 
- *    Rev 1.1   17 Apr 2018 16:12:50   ybadal
- * Misra improvement.
- * 
- *    Rev 1.0   Sep 22 2017 16:12:16   Sbhanda
- * Initial revision.
- * 
- *    Rev 1.2   Sep 13 2017 13:34:28   ybadal
- * paste macro has been corrected.
- * 
- *    Rev 1.1   Aug 15 2017 08:29:26   ybadal
- * - move dio port macros from sensor module to dio_rl78 module
- * 
- *    Rev 1.0   19 Oct 2015 12:25:02   ybadal
- * Initial revision.
- * 
- *********************************************************** end of comment */
 #endif /*SENSOR_AQUISITION_HM*/
 
 
